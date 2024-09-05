@@ -24,7 +24,13 @@ Route::controller(ProfileController::class)->group(function(){
     Route::post('/profiles','store')->name('profiles.store');
     Route::get('/profiles/{profile}/edit','edit')->name('profiles.edit');
     Route::put('/profiles/{profile}','update')->name('profiles.update');
-    Route::delete('/profiles/{profile}','destroy')->name('profiles.destroy');    
+    Route::delete('/profiles/{profile}','destroy')->name('profiles.destroy');  
+    Route::get('/profiles', 'index')->name('profiles.index');
+    Route::get('/profiles/search', 'search')->name('profiles.search');
+ 
+    
+
+    Route::get('/profiles/fetch', 'fetchProfiles')->name('profiles.fetchProfiles');; 
 });
 
 Route::middleware([

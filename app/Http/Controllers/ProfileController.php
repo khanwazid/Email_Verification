@@ -16,7 +16,56 @@ class ProfileController extends Controller
             'profiles' => $profiles
         ]);
     }
+    
+    
+        public function search(Request $request)
+        {
+            
+            $request->validate([
+                'name' => 'nullable|string|max:255',
+                'email' => 'nullable|email|max:255',
+                'phone' => 'nullable|string|max:20',
+            ]);
+    
+            
+            $query = Profile::query();
+    
+            if ($request->filled('name')) {
+                $query->where('name', 'like', '%' . $request->input('name') . '%');
+            }
+    
+            if ($request->filled('email')) {
+                $query->where('email', 'like', '%' . $request->input('email') . '%');
+            }
+    
+            if ($request->filled('phone')) {
+                $query->where('phone', 'like', '%' . $request->input('phone') . '%');
+            }
+    
+            $profiles = $query->paginate(10); 
+    
+            if ($request->ajax()) {
+                return response()->json([
+                    'profiles' => $profiles->items(),
+                    'pagination' => $profiles->links()->render()
+                ]);
+            }
+    
+            return view('profiles.index', ['profiles' => $profiles]);
+        }
+    
+    
+    
 
+public function fetchProfiles(Request $request)
+{
+    $profiles = Profile::where('name', 'like', '%'.$request->input('query').'%')
+        ->orWhere('email', 'like', '%'.$request->input('query').'%')
+        ->orWhere('phone', 'like', '%'.$request->input('query').'%')
+        ->paginate(1);
+
+    return view('profiles.pagination', compact('profiles'))->render();
+}
     
     public function create() {
         return view('profiles.create');

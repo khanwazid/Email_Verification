@@ -69,11 +69,17 @@
                                 <button class="btn btn-lg btn-primary">Submit</button>
                             </div>
                         </div>
+                       
                     </form>
                 </div>
             </div>
         </div>
     </div>
     
+
+
   </body>
+ 
+
+<script src="{{ asset('js/script.js') }}"></script>
 </html>

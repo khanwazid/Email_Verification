@@ -8,7 +8,7 @@ $(document).ready(function() {
             type: 'GET',
             data: { query: query },
             success: function(data) {
-                $('#users-table').html(data);
+                $('#profiles-table').html(data);
             }
         });
     });

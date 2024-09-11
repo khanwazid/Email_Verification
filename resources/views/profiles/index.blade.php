@@ -3,6 +3,66 @@
 <head>
     <title>Profile List</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #search-form {
+            margin-bottom: 20px;
+        }
+
+        #search-form input[type="text"] {
+            margin-right: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #search-form button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #search-form button:hover {
+            background-color: #0056b3;
+        }
+
+        #profile-list p {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+
+        #pagination-links {
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            margin-right: 5px;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .pagination a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Profile List</h1>
@@ -25,14 +85,14 @@
     
     <script>
         $(document).ready(function() {
-            function fetchProfiles(page = 1, searchParams = {}) {
+            function fetchProfiles(page = 2, searchParams = {}) {
                 $.ajax({
                     url: '{{ route('profiles.search') }}',
                     data: { ...searchParams, page: page },
                     success: function(response) {
-                        $('#user-list').html('');
+                        $('#profile-list').html('');
                         response.users.forEach(function(profile) {
-                            $('#user-list').append('<p>' + profile.name + ' - ' + profile.email + ' - ' + profile.phone + '</p>');
+                            $('#profile-list').append('<p>' + profile.name + ' - ' + profile.email + ' - ' + profile.phone + '</p>');
                         });
                         $('#pagination-links').html(response.pagination);
                     }
@@ -46,20 +106,20 @@
                     email: $('#search-email').val(),
                     phone: $('#search-phone').val()
                 };
-                fetchProfiles(1, searchParams);
+                fetchProfiles(50, searchParams);
             });
 
-            $(document).on('click', '.pagination a', function(event) {
+            $(document).on('submit' , function(event) {
                 event.preventDefault();
-                let page = $(this).attr('href').split('page=')[1];
-                fetchProfiles(page, {
+               let page = $(this).attr('href').split('page=')[10];
+                fetchProfiles('submit', {
                     name: $('#search-name').val(),
                     email: $('#search-email').val(),
                     phone: $('#search-phone').val()
                 });
             });
             
-            // Initial fetch
+            
             fetchProfiles();
         });
     </script>

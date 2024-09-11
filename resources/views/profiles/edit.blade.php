@@ -14,7 +14,7 @@
     <div class="container">
         <div class="row justify-content-center mt-4">
             <div class="col-md-10 d-flex justify-content-end">
-                <a href="{{ route('products.index') }}" class="btn btn-dark">Back</a>
+                <a href="{{ route('profiles.index') }}" class="btn btn-dark">Back</a>
             </div>
         </div>
         <div class="row d-flex justify-content-center">
@@ -22,9 +22,10 @@
                 <div class="card borde-0 shadow-lg my-4">
                     <div class="card-header bg-dark">
                         <h3 class="text-white">Edit Profile</h3>
-                    </div>
+                    </div> 
                     
-                    <form enctype="multipart/form-data" action="{{ route('profiles.store') }}" method="post">
+                    <form action="{{ route('profiles.update', $profile->id) }}" method="POST">
+                
                         @csrf
                         <div class="card-body">
                             <div class="mb-3">
@@ -62,14 +63,7 @@
                                     <p class="invalid-feedback">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <div class="mb-3">
-                                <label for="" class="form-label h5">Image</label>
-                                <input type="file" class="form-control form-control-lg" placeholder="Price" name="image">
-                                
-                                @if ($product->image != "")
-                                    <img  class="w-50 my-3" src="{{ asset('uploads/profiles/'.$profile->image) }}" alt="">
-                                @endif
-                            </div>
+                            
                             <div class="d-grid">
                                 <button class="btn btn-lg btn-primary">Update</button>
                             </div>

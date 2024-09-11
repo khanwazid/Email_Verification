@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WelcomeController;
+
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 /*
 |--------------------------------------------------------------------------
@@ -22,16 +25,18 @@ Route::controller(ProfileController::class)->group(function(){
     Route::get('/profiles','index')->name('profiles.index');
     Route::get('/profiles/create','create')->name('profiles.create');
     Route::post('/profiles','store')->name('profiles.store');
-    Route::get('/profiles/{profile}/edit','edit')->name('profiles.edit');
-    Route::put('/profiles/{profile}','update')->name('profiles.update');
+    Route::get('/profiles/edit/{id}', 'edit')->name('profiles.edit');
+    Route::get('/profiles/edit/{profileId}', 'edit')->name('profiles.edit');
+   
     Route::delete('/profiles/{profile}','destroy')->name('profiles.destroy');  
-    Route::get('/profiles', 'index')->name('profiles.index');
+
     Route::get('/profiles/search', 'search')->name('profiles.search');
  
     
 
     Route::get('/profiles/fetch', 'fetchProfiles')->name('profiles.fetchProfiles');; 
 });
+
 
 Route::middleware([
     'auth:sanctum',
@@ -42,6 +47,3 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
-
-
-

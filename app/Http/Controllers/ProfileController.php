@@ -60,9 +60,9 @@ class ProfileController extends Controller
 public function fetchProfiles(Request $request)
 {
     $profiles = Profile::where('name', 'like', '%'.$request->input('query').'%')
-        ->orWhere('email', 'like', '%'.$request->input('query').'%')
-        ->orWhere('phone', 'like', '%'.$request->input('query').'%')
-        ->paginate(1);
+                         ->orWhere('email', 'like', '%'.$request->input('query').'%')
+                        ->orWhere('phone', 'like', '%'.$request->input('query').'%')
+                        ->paginate(1);
 
     return view('profiles.pagination', compact('profiles'))->render();
 }
@@ -73,7 +73,7 @@ public function fetchProfiles(Request $request)
 
     
     public function store(Request $request) {
-        $rules = [
+     try{  $rules = [
             'name' => 'required|min:5',
             'username' => 'required|min:8',
             'email' => 'required|min:10',
@@ -118,19 +118,29 @@ public function fetchProfiles(Request $request)
             $profile->save();
         }        
 
-        return redirect()->route('profiles.index')->with('success','Profile added successfully.');
+        return redirect()->route('profiles.create')->with('success', 'Profile created successfully!');
+    }
+    catch(\Exception $e) {
+        return back()->with('error', 'Error creating profile: '.$e->getMessage());
+    }
     }
 
     
-    public function edit($id) {
+   public function edit($id) {
         $profile = Profile::findOrFail($id);
-        return view('profiles.edit',[
-            'profile' => $profile
-        ]);
+       // return redirect()->route('profiles.edit');
+        return redirect()->route('profiles.edit', ['profileId' => $profile->id]);
+
+       
+     
     }
+   /*public function edit($id)
+    {
+        return view('profiles.edit', compact('profile'));
+    }*/
+    
 
-
-    public function update($id, Request $request) {
+    public function update( Request $request ,$id) {
 
         $profile = Profile::findOrFail($id);
 
@@ -193,4 +203,10 @@ public function fetchProfiles(Request $request)
 
        return redirect()->route('profiles.index')->with('success','Profile deleted successfully.');
     }
+
+    protected function authenticated(Request $request, $user)
+{
+    return redirect()->route('profiles.show', $user->id);
+}
+
 }

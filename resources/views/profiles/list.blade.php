@@ -21,7 +21,7 @@
             <div class="col-md-10">
                 <div class="card borde-0 shadow-lg my-4">
                     <div class="card-header bg-dark">
-                        <h3 class="text-white">Edit Profile</h3>
+                        <h3 class="text-white"> Profile</h3>
                     </div>
                     <form enctype="multipart/form-data" action="{{ route('profiles.store') }}" method="post">
                         @csrf
@@ -61,10 +61,7 @@
                                     <p class="invalid-feedback">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <div class="mb-3">
-                                <label for="" class="form-label h5">Image</label>
-                                <input type="file" class="form-control form-control-lg" placeholder="Price" name="image">
-                            </div>
+                           
                             <div class="d-grid">
                                 <button class="btn btn-lg btn-primary">Submit</button>
                             </div>

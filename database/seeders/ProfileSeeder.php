@@ -18,7 +18,7 @@ class ProfileSeeder extends Seeder
     {
         $faker =Faker::create();
         for($i=1; $i<=50; $i++){
-            $profiles = new Profile;
+         $profiles = new Profile;
         $profiles->name = $faker->name;
         $profiles->username = $faker->username;
         $profiles->email = $faker->email;

@@ -16,7 +16,10 @@ class ProfileController extends Controller
             'profiles' => $profiles
         ]);
     }
-    
+    public function getData(){
+        $profiles=Profile::with('address')->get();
+        return $profiles;
+    }
     
         public function search(Request $request)
         {

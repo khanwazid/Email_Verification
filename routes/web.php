@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\WelcomeController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -31,12 +32,13 @@ Route::controller(ProfileController::class)->group(function(){
     Route::delete('/profiles/{profile}','destroy')->name('profiles.destroy');  
 
     Route::get('/profiles/search', 'search')->name('profiles.search');
- 
+    Route::get('/profile','getData');
     
 
-    Route::get('/profiles/fetch', 'fetchProfiles')->name('profiles.fetchProfiles');; 
+    Route::get('/profiles/fetch', 'fetchProfiles')->name('profiles.fetchProfiles');
 });
-
+//Route::get('/profile',ProfileController::class);
+Route::get('/address',AddressController::class);
 
 Route::middleware([
     'auth:sanctum',
@@ -47,3 +49,8 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+
+Route::post('/address', [AddressController::class, 'store'])->name('address.store');
+Route::put('/address/{address}', [AddressController::class, 'update'])->name('address.update');
+Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');

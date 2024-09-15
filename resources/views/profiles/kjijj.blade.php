@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
  <style>
-   
+    /* public/css/styles.css */
 
 body {
     font-family: Arial, sans-serif;
@@ -15,10 +18,10 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-image: url('/images/background.jpg'); 
-    background-size: 100%;
-    background-repeat: no-repeat; 
-    background-position: center; 
+    background-image: url('/images/background.jpg'); /* adjust the path to your image file */
+  background-size: cover; /* optional */
+  background-repeat: no-repeat; /* optional */
+  background-position: center; /* optional */
 }
 
 .container {
@@ -94,7 +97,10 @@ h2 {
 </head>
 <body>
 <div class="mt-4">
-       
+        @guest
+            <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ route('register') }}" class="btn btn-secondary">Register</a>
+        @endguest
     </div>
 
     <div class="container">
@@ -111,8 +117,7 @@ h2 {
                     <input id="password" type="password" name="password" required>
                 </div>
                 <div class="form-group">
-                   
-                    <button type="submit"><a href="{{ route('login') }}">Login</a></button>
+                    <button type="submit">Login</button>
                 </div>
                 <div class="form-footer">
                     <p>Don't have an account? <a href="{{ route('register') }}">Register</a></p>

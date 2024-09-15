@@ -11,5 +11,7 @@ class Profile extends Model
     protected $fillable = [
         'name', 'email', 'password', 'phone', 'username', 
     ];
-    
+     public function address(){
+        return $this->hasMany(Address::class);
+     }
 }

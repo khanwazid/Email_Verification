@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\WelcomeController;
 
-Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+
+//Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +24,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::controller(ProfileController::class)->group(function(){
+
+
+/*Route::controller(ProfileController::class)->group(function(){
     Route::get('/profiles','index')->name('profiles.index');
     Route::get('/profiles/create','create')->name('profiles.create');
     Route::post('/profiles','store')->name('profiles.store');
@@ -36,9 +40,16 @@ Route::controller(ProfileController::class)->group(function(){
     
 
     Route::get('/profiles/fetch', 'fetchProfiles')->name('profiles.fetchProfiles');
-});
-//Route::get('/profile',ProfileController::class);
-Route::get('/address',AddressController::class);
+});*/
+
+Route::get('list',[AddressController::class,'show']);
+Route::view('add','addaddress');
+Route::post('add',[AddressController::class,'addData']);
+
+Route::get('delete/{id}',[AddressController::class,'delete']);
+Route::get('edit/{id}',[AddressController::class,'editData']);
+Route::post('edit',[AddressController::class,'update']);
+
 
 Route::middleware([
     'auth:sanctum',
@@ -51,6 +62,9 @@ Route::middleware([
 });
 
 
-Route::post('/address', [AddressController::class, 'store'])->name('address.store');
-Route::put('/address/{address}', [AddressController::class, 'update'])->name('address.update');
-Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+Route::get('/usersaddresses', [UserController::class, 'getData']);
+Route::get('search', [UserController::class, 'search']);
+  
+

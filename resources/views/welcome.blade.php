@@ -3,122 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
- <style>
-   
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #9a9474;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('/images/background.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat; 
+            background-position: center; 
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-image: url('/images/background.jpg'); 
-    background-size: 100%;
-    background-repeat: no-repeat; 
-    background-position: center; 
-}
+        .container {
+            text-align: center;
+            color: white; 
+        }
 
-.container {
-    display: flex;
-    justify-content: right;
-    align-items: right;
-    width: 100%;
-}
+        .links {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            margin-top: 0;
+        }
 
-.form-container {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-}
+        .links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007BFF; 
+            font-weight: bold;
+        }
 
-h2 {
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
+        .links a:hover {
+            text-decoration: underline;
+        }
 
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.form-group button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.form-group button:hover {
-    background-color: #0056b3;
-}
-
-.form-footer {
-    margin-top: 1rem;
-    text-align: center;
-}
-
-.form-footer p {
-    margin: 0;
-}
-
-.form-footer a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.form-footer a:hover {
-    text-decoration: underline;
-}
-
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-<div class="mt-4">
-       
+
+    <div class="links">
+        <a href="{{ route('login') }}">Login</a>
+        <a href="{{ route('register') }}">Register</a>
     </div>
 
-    <div class="container">
-        <div class="form-container">
-            <h2>Login</h2>
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input id="email" type="email" name="email" required autofocus>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input id="password" type="password" name="password" required>
-                </div>
-                <div class="form-group">
-                   
-                    <button type="submit"><a href="{{ route('login') }}">Login</a></button>
-                </div>
-                <div class="form-footer">
-                    <p>Don't have an account? <a href="{{ route('register') }}">Register</a></p>
-                </div>
-            </form>
-        </div>
-    </div>
+
 </body>
 </html>

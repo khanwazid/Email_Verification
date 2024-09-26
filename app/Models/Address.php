@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    use HasFactory; 
+    use HasFactory;
+    public $timestamps=false; 
     protected $fillable = [
-        'profile_id', 'address 1', 'address 2'
+         'address_1', 'address_2', 'user_id',
     ];
 
-    public function profile()
+    public function user()
     {
-        return $this->belongsTo(Profile::class);
+        return $this->belongsTo(User::class);
     }
 }
 

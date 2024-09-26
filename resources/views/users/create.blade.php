@@ -65,6 +65,14 @@
                                 @error('password')
                                     <p class="invalid-feedback">{{ $message }}</p>
                                 @enderror
+</div>
+<div class="mb-3">
+                                <label for="" class="form-label h5">Image</label>
+                                <input value="{{ old('image') }}" type="file" class="@error('image') is-invalid @enderror form-control form-control-lg" placeholder="Image" name="image">
+                                @error('image')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+</div>
                           
 
                             <div class="d-grid">

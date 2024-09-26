@@ -15,27 +15,34 @@
         @endif
 
         <div class="mt-4 flex items-center justify-between">
-            <form method="POST" action="{{ route('verification.send') }}">
+            <form id="verification-form" method="POST" action="{{ route('verification.send') }}" onsubmit="showLoading()">
                 @csrf
-
-                <div>
-                    <x-button type="submit">
+                <div class="flex items-center">
+                    <x-button id="resend-button" type="submit">
                         {{ __('Resend Verification Email') }}
                     </x-button>
+
+                   
+                    <div id="loading" style="display:none;" class="ml-2 inline-flex items-center">
+                        <svg class="animate-spin h-5 w-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"></path>
+                        </svg>
+                    </div>
                 </div>
             </form>
 
-            <div>
+            <div class="flex items-center">
                 <a
                     href="{{ route('profile.show') }}"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    {{ __('Edit Profile') }}</a>
+                    {{ __('Edit Profile') }}
+                </a>
 
-                <form method="POST" action="{{ route('logout') }}" class="inline">
+                <form method="POST" action="{{ route('logout') }}" class="inline ml-2">
                     @csrf
-
-                    <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ml-2">
+                    <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         {{ __('Log Out') }}
                     </button>
                 </form>
@@ -43,3 +50,14 @@
         </div>
     </x-authentication-card>
 </x-guest-layout>
+
+<script>
+    function showLoading() {
+        const loadingDiv = document.getElementById('loading');
+        const resendButton = document.getElementById('resend-button');
+
+        loadingDiv.style.display = 'inline-flex'; 
+        resendButton.disabled = true;
+        resendButton.textContent = '{{ __('Sending...') }}'; 
+    }
+</script>

@@ -18,33 +18,26 @@ class CreateNewUser implements CreatesNewUsers
      * @param  array<string, string>  $input
      */
     public function create(array $input): User
-{
-    // Validate the input
-    Validator::make($input, [
-        'name' => ['required', 'string', 'max:255'],
-        'username' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        'phone_number' => ['required', 'string', 'max:15', 'unique:users'],
-        'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif|max:2048'],
-        'gender' => ['required', 'integer', 'in:0,1'],
+    {
+        Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
+            'phone_number' => ['nullable', 'string', 'regex:/^[0-9]{10}$/'],
+            'gender' => ['nullable', 'integer', 'in:0,1'],
+            'image' => ['nullable', 'image', 'max:2048'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => $this->passwordRules(),
+            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+        ])->validate();
 
-        'password' => $this->passwordRules(),
-        'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : [],
-    ])->validate();
-
-    $path = null;
-    if (isset($input['image']) && $input['image']) {
-        $path = $input['image']->store('images', 'public');
+        return User::create([
+            'name' => $input['name'],
+            'username' => $input['username'],
+            'phone_number' => $input['phone'],
+            'gender' => $input['gender'],
+            'image' => $input['image'] ? $input['image']->store('images', 'public') : null,
+            'email' => $input['email'],
+            'password' => Hash::make($input['password']),
+        ]);
     }
-
-    return User::create([
-        'name' => $input['name'],
-        'username' => $input['username'],
-        'email' => $input['email'],
-        'phone_number' => $input['phone_number'],
-        'gender' => $input['gender'],
-        'image' => $path,
-        'password' => Hash::make($input['password']),
-    ]);
-}
 }

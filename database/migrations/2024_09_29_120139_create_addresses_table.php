@@ -14,13 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('addresses', function (Blueprint $table) {
-            $table->id(); // Create an auto-incrementing ID column
+            $table->id(); 
             $table->string('address_1', 30);
-            $table->string('address_2', 30)->nullable(); // Make this nullable if not required
+            $table->string('address_2', 30)->nullable(); 
             $table->foreignId('user_id')
-                  ->constrained('users') // Reference the 'users' table
-                  ->onDelete('cascade'); // Delete addresses when the user is deleted
-            $table->timestamps(); // Create created_at and updated_at columns
+                  ->constrained('users') 
+                  ->onDelete('cascade'); 
+            $table->timestamps(); 
             $table->unique(['address_1', 'address_2', 'user_id']);
         });
           

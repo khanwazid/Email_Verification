@@ -14,7 +14,7 @@ class UserController extends Controller
     public function getData(){
         $users=User::with('address')->get();
        return $users;
-      // return view('users.show',compact('users'));
+     
     }
     public function search(Request $request){
         $userData=User::where('name','like',"%$request->search%")->get();

@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-//use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Address;
 
-class User extends Authenticatable //implements MustVerifyEmail 
+class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
@@ -24,7 +25,7 @@ class User extends Authenticatable //implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+       'name',
         'email',
         'password',
         'image',
@@ -32,9 +33,6 @@ class User extends Authenticatable //implements MustVerifyEmail
         'phone_number',
         'gender',
     ];
-    public function address(){
-        return $this->hasMany(Address::class);
-     }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -65,4 +63,8 @@ class User extends Authenticatable //implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
 }

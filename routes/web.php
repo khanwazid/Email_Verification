@@ -62,6 +62,8 @@ Route::middleware([
 });
 
 
+
+
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
 Route::get('/usersaddresses', [UserController::class, 'getData']);

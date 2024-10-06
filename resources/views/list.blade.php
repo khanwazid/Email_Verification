@@ -44,6 +44,9 @@
                     <th>Id</th>
                     <th>Address 1</th>
                     <th>Address 2</th>
+                    <th>Country Id</th>
+                    <th>State Id</th>
+                    <th>City Id</th>
                     <th>User ID</th>
                     <th>Operation</th>
                 </tr>
@@ -52,8 +55,11 @@
                 @foreach($addresses as $address)
                     <tr>
                         <td>{{ $address['id'] }}</td>
-                        <td>{{ $address['address_1'] }}</td>
-                        <td>{{ $address['address_2'] }}</td>
+                        <td>{{ $address['address_line_1'] }}</td>
+                        <td>{{ $address['address_line_2'] }}</td>
+                        <td>{{ $address['country_id'] }}</td>
+                        <td>{{ $address['state_id'] }}</td>
+                        <td>{{ $address['city_id'] }}</td>
                         <td>{{ $address['user_id'] }}</td>
                         <td>
                             <div class="button-group">

@@ -85,6 +85,42 @@
 
             <form   action="{{ url('add') }}" method="POST">
                 @csrf
+
+                <input 
+                    type="text" 
+                    name="country" 
+                    placeholder="Enter Country" 
+                    value="{{ old('country') }}" 
+                    class="@error('country') is-invalid @enderror"
+                >
+                @error('country')
+                    <p class="invalid-feedback">{{ $message }}</p>
+                @enderror
+
+                <input 
+                    type="text" 
+                    name="state" 
+                    placeholder="Enter State" 
+                    value="{{ old('state') }}" 
+                    class="@error('state') is-invalid @enderror"
+                >
+                @error('country')
+                    <p class="invalid-feedback">{{ $message }}</p>
+                @enderror
+
+
+                <input 
+                    type="text" 
+                    name="city" 
+                    placeholder="Enter City" 
+                    value="{{ old('city') }}" 
+                    class="@error('city') is-invalid @enderror"
+                >
+                @error('country')
+                    <p class="invalid-feedback">{{ $message }}</p>
+                @enderror
+
+
               
                 <input 
                     type="text" 

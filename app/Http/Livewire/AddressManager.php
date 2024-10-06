@@ -8,16 +8,22 @@ class AddressManager extends Component
 {
     public $addresses;
     public $newAddress = [
-        'address_1' => '',
-        'address_2' => '',
+        'country_id' => '',
+        'state_id' => '',
+        'city_id' => '',
+        'address_line_1' => '',
+        'address_line_2' => '',
     ];
     public $editingAddressId = null;
     public $showAddModal = false; // Ensure this property is defined
     public $showEditModal = false; // You should also have this if you have an edit modal
 
     protected $rules = [
-        'newAddress.address_1' => 'required',
-        'newAddress.address_2' => 'required',
+        'newAddress.country_id' => 'required',
+        'newAddress.state_id' => 'required',
+        'newAddress.city_id' => 'required',
+        'newAddress.address_line_1' => 'required',
+        'newAddress.address_line_2' => 'required',
     ];
 
     public function mount()
@@ -62,8 +68,11 @@ class AddressManager extends Component
     private function resetNewAddress()
     {
         $this->newAddress = [
-            'address_1' => '',
-            'address_2' => '',
+            'country_id' => '',
+            'state_id' => '',
+            'city_id' => '',
+            'address_line_1' => '',
+            'address_line_2' => '',
         ];
     }
 

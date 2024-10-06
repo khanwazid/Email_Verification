@@ -42,14 +42,29 @@ Route::get('/', function () {
     Route::get('/profiles/fetch', 'fetchProfiles')->name('profiles.fetchProfiles');
 });*/
 
-Route::get('list',[AddressController::class,'show']);
-Route::view('add','addaddress');
+//Route::get('list',[AddressController::class,'show']);
+/*Route::view('add','addaddress');
 Route::post('add',[AddressController::class,'addData']);
 
 Route::get('delete/{id}',[AddressController::class,'delete']);
 Route::get('edit/{id}',[AddressController::class,'editData']);
-Route::post('edit',[AddressController::class,'update']);
+Route::post('edit',[AddressController::class,'update']);*/
+Route::middleware(['auth'])->group(function () {
+    Route::get('/add', [AddressController::class, 'add'])->name('addresses.add');
+    Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+    Route::get('get-states', [AddressController::class, 'getStates'])->name('get.states');
+    Route::get('get-cities', [AddressController::class, 'getCities'])->name('get.cities');
+    Route::get('list',[AddressController::class,'show']);
+    Route::get('delete/{id}',[AddressController::class,'delete']);
+    //Route::get('addresses/update',[AddressController::class,'update']);
+   // Route::post('edit',[AddressController::class,'update']);
+    // Route for displaying the Edit form
+Route::get('/addresses/{id}/edit', [AddressController::class, 'edit'])->name('addresses.edit');
 
+// Route for updating the address
+Route::get('/edit/{id}', [AddressController::class, 'edit'])->name('addresses.edit');
+Route::put('/addresses/{id}', [AddressController::class, 'update'])->name('addresses.update');
+});
 
 Route::middleware([
     'auth:sanctum',
@@ -60,7 +75,6 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
-
 
 
 

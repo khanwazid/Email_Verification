@@ -6,6 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\WelcomeController;
+use Illuminate\Support\Facades\Auth;
+
+
 
 
 //Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -20,10 +23,18 @@ use App\Http\Controllers\WelcomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
 
+
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect('/user/profile');  // Redirect to /user/profile if logged in
+    }
+
+    return view('welcome');  // Show the welcome page if not authenticated
+});
 
 
 /*Route::controller(ProfileController::class)->group(function(){
@@ -52,9 +63,11 @@ Route::post('edit',[AddressController::class,'update']);*/
 Route::middleware(['auth'])->group(function () {
     Route::get('/add', [AddressController::class, 'add'])->name('addresses.add');
     Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+
+    
     Route::get('get-states', [AddressController::class, 'getStates'])->name('get.states');
     Route::get('get-cities', [AddressController::class, 'getCities'])->name('get.cities');
-    Route::get('list',[AddressController::class,'show']);
+   // Route::get('list',[AddressController::class,'show']);
     Route::get('delete/{id}',[AddressController::class,'delete']);
     //Route::get('addresses/update',[AddressController::class,'update']);
    // Route::post('edit',[AddressController::class,'update']);
@@ -78,9 +91,11 @@ Route::middleware([
 
 
 
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
+//Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
 Route::get('/usersaddresses', [UserController::class, 'getData']);
 Route::get('search', [UserController::class, 'search']);
+Route::get('list',[AddressController::class,'show']);
+Route::get('/addresses', [AddressController::class, 'show'])->name('addresses.list');
   
 

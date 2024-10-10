@@ -7,46 +7,58 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            color: #333;
             background-color: #f8f9fa;
         }
-        h1 {
-            text-align: center;
-            color: #333;
+        .container {
             margin-top: 20px;
+            max-width: 1000px;
         }
-        .table th {
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+        }
+        th {
             background-color: #343a40;
             color: white;
         }
-        .button-group {
-            display: flex;
-            align-items: center;
+        tr:hover {
+            background-color: #f1f1f1;
         }
-        tbody tr:hover {
-            background-color: #e9ecef; 
+        
+        .btn-primary, .btn-edit {
+            background-color: black; /* Set button background to black */
+            border-color: black; /* Remove border color */
+            color: white; /* Change text color to white */
+        }
+        .btn-primary:hover, .btn-edit:hover {
+            background-color: #333; /* Darker shade on hover */
+            border-color: #333; /* Darker border on hover */
         }
     </style>
 </head>
 <body>
-    <h1>Addresses List</h1>
     <div class="container">
+        <h1 class="mb-4">Addresses List</h1>
+
         <!-- Add Address Button on the right -->
         <div class="d-flex justify-content-end mb-3">
             <a href="{{ url('add') }}" class="btn btn-primary">Add New Address</a>
         </div>
 
         <!-- Addresses Table -->
-        <table class="table table-bordered">
+        <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>ID</th>
                     <th>Address 1</th>
                     <th>Address 2</th>
-                    <th>Country Id</th>
-                    <th>State Id</th>
-                    <th>City Id</th>
+                    <th>Country ID</th>
+                    <th>State ID</th>
+                    <th>City ID</th>
                     <th>User ID</th>
                     <th>Operation</th>
                 </tr>
@@ -70,7 +82,7 @@
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                                 <!-- Edit Link -->
-                                <a href="{{ url('edit/'.$address['id']) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{{ url('edit/'.$address['id']) }}" class="btn btn-edit btn-sm">Edit</a> <!-- Added btn-edit class -->
                             </div>
                         </td>
                     </tr>

@@ -11,10 +11,12 @@
         }
         .container {
             margin-top: 20px;
+            max-width: 800px;
         }
         .table {
             border-radius: 8px;
             overflow: hidden;
+            
         }
         th, td {
             text-align: left;
@@ -35,12 +37,13 @@
             background-color: #f1f1f1;
         }
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: black; /* Set button background to black */
+            border-color: black; /* Remove border color */
+            color: white; /* Change text color to white */
         }
         .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
+            background-color: #333; /* Darker shade on hover */
+            border-color: #333; /* Darker border on hover */
         }
     </style>
 </head>
@@ -87,6 +90,7 @@
                 @endforeach
             </tbody>
         </table>
+       
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

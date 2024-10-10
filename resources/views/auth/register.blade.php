@@ -22,18 +22,162 @@
 
             <div class="mt-4">
     <x-label for="gender" value="{{ __('Gender') }}" />
-    <select id="gender" name="gender" class="block mt-1 w-full" required>
-        <option value="" disabled selected>{{ __('Select Gender') }}</option>
+    <select id="gender" name="gender" class="block mt-1 w-full"  required>
+        {{--<option value="" disabled selected>{{ __('Select Gender') }}</option>
         <option value="0">{{ __('Male') }}</option>   
-        <option value="1">{{ __('Female') }}</option> 
+        <option value="1">{{ __('Female') }}</option> --}}
+        <option value="" disabled selected>{{ __('Select Gender') }}</option>
+        {{--<option value="" disabled selected>Select Gender</option>--}}
+                    <option value="0" {{ old('gender') == '0' ? 'selected' : '' }}>Male</option>
+                    <option value="1" {{ old('gender') == '1' ? 'selected' : '' }}>Female</option>
     </select>
 </div>
 
 
-            <div class="mt-4">
+
+
+
+
+         {{-- <div class="mt-4">
                 <x-label for="image" value="{{ __('Profile Image') }}" />
                 <x-input id="image" class="block mt-1 w-full" type="file" name="image" accept="image/*" />
-            </div>
+            </div>--}}
+        
+            
+          {{-- <div class="mt-4">
+    <label class="block font-medium text-sm text-gray-700" for="image">
+        Profile Image
+    </label>
+    
+    <!-- Hidden file input -->
+    <input id="image" class="hidden" type="file" name="image" accept="image/*">
+
+    <!-- Custom styled label acting as the button -->
+    <label for="image" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
+        Choose File
+    </label>
+
+    <!-- Display the selected file name -->
+    <span id="file-name" class="text-sm text-gray-500 ml-3">No file chosen</span>
+</div>
+
+<!-- JavaScript to update the file name -->
+<script>
+    document.getElementById('image').addEventListener('change', function() {
+        var fileName = this.files[0]?.name || 'No file chosen';
+        document.getElementById('file-name').textContent = fileName;
+    });
+</script>--}}
+{{--<div class="mt-4">
+    <label class="block font-medium text-sm text-gray-700" for="image">
+        Profile Image
+    </label>
+    
+    <div class="flex items-center mt-2">
+        <!-- Hidden file input -->
+        <input id="image" class="hidden" type="file" name="image" accept="image/*">
+
+        <!-- Custom styled label acting as the button -->
+        <label for="image" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
+            Choose File
+        </label>
+
+        <!-- Display the selected file name -->
+        <span id="file-name" class="text-lg font-medium text-black ml-2">>No file chosen</span>
+    </div>
+</div>
+
+<!-- JavaScript to update the file name -->
+<script>
+    document.getElementById('image').addEventListener('change', function() {
+        var fileName = this.files[0]?.name || 'No file chosen';
+        document.getElementById('file-name').textContent = fileName;
+    });
+</script>--}}
+
+{{--<div class="mt-4">
+    <label class="block font-medium text-sm text-gray-700" for="image">
+        Profile Image
+    </label>
+    
+    <div class="flex items-center mt-2">
+        <!-- Hidden file input -->
+        <input id="image" class="hidden" type="file" name="image"  accept="image/*">
+
+        <!-- Custom styled label acting as the button -->
+        <label for="image" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
+            Choose File
+        </label>
+
+        <!-- Display the selected file name -->
+        <span id="file-name" class="text-lg font-medium text-black ml-3">No file chosen</span>
+    </div>
+</div>
+
+<!-- JavaScript to update the file name -->
+<script>
+    document.getElementById('image').addEventListener('change', function() {
+        var fileName = this.files[0]?.name || 'No file chosen';
+        document.getElementById('file-name').textContent = fileName;
+    });
+</script>--}}
+
+<div class="mt-4">
+    <label class="block font-medium text-sm text-gray-700" for="image">
+        Profile Image
+    </label>
+    
+    <div class="flex items-center mt-2">
+        <!-- Hidden file input -->
+        <input id="image" class="hidden" type="file" name="image" accept="image/*" 
+               onchange="updateFileName(this)">
+
+        <!-- Custom styled label acting as the button -->
+        <label for="image" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
+            Choose File
+        </label>
+
+        <!-- Display the selected file name -->
+        <span id="file-name" class="text-lg font-medium text-black ml-3">
+            @if(old('image'))
+                {{ old('image')->getClientOriginalName() }}
+                
+            @else
+                No file chosen
+            @endif
+        </span>
+    </div>
+
+    @error('image')
+        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
+<!-- JavaScript to update the file name -->
+<script>
+    function updateFileName(input) {
+        var fileName = input.files[0]?.name || 'No file chosen';
+        document.getElementById('file-name').textContent = fileName;
+    }
+
+     //Check if there's an old file name and update the display
+    window.addEventListener('load', function() {
+        var oldFileName = "{{ old('image') ? old('image')->getClientOriginalName() : '' }}";
+        if (oldFileName) {
+            document.getElementById('file-name').textContent = oldFileName;
+        }
+    });
+    
+</script>
+
+
+
+
+ 
+
+
+
+
 
             <div class="mt-4">
                 <x-label for="email" value="{{ __('Email') }}" />

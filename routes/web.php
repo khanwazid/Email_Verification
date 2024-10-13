@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Laravel\Telescope\Telescope;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\TempUploadController;
 
 
 
@@ -37,8 +38,12 @@ Route::get('/', function () {
 });
 
 
+
+
+
 /*Route::controller(ProfileController::class)->group(function(){
     Route::get('/profiles','index')->name('profiles.index');
+    use Laravel\Telescope\Telescope;//i have added this on 13 october
     Route::get('/profiles/create','create')->name('profiles.create');
     Route::post('/profiles','store')->name('profiles.store');
     Route::get('/profiles/edit/{id}', 'edit')->name('profiles.edit');
@@ -97,5 +102,6 @@ Route::get('/usersaddresses', [UserController::class, 'getData']);
 Route::get('search', [UserController::class, 'search']);
 Route::get('list',[AddressController::class,'show']);
 Route::get('/addresses', [AddressController::class, 'show'])->name('addresses.list');
+Route::post('/upload-temp', [TempUploadController::class, 'store'])->name('upload.temp');
   
 

@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Jetstream\Contracts\DeletesUsers;
+use App\Actions\Jetstream\DeleteUser;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        
+      
+        $this->app->bind(DeletesUsers::class, DeleteUser::class);
     if ($this->app->environment('local')) {
         $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
         $this->app->register(TelescopeServiceProvider::class);

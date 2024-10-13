@@ -33,96 +33,7 @@
     </select>
 </div>
 
-
-
-
-
-
-         {{-- <div class="mt-4">
-                <x-label for="image" value="{{ __('Profile Image') }}" />
-                <x-input id="image" class="block mt-1 w-full" type="file" name="image" accept="image/*" />
-            </div>--}}
-        
-            
-          {{-- <div class="mt-4">
-    <label class="block font-medium text-sm text-gray-700" for="image">
-        Profile Image
-    </label>
-    
-    <!-- Hidden file input -->
-    <input id="image" class="hidden" type="file" name="image" accept="image/*">
-
-    <!-- Custom styled label acting as the button -->
-    <label for="image" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
-        Choose File
-    </label>
-
-    <!-- Display the selected file name -->
-    <span id="file-name" class="text-sm text-gray-500 ml-3">No file chosen</span>
-</div>
-
-<!-- JavaScript to update the file name -->
-<script>
-    document.getElementById('image').addEventListener('change', function() {
-        var fileName = this.files[0]?.name || 'No file chosen';
-        document.getElementById('file-name').textContent = fileName;
-    });
-</script>--}}
 {{--<div class="mt-4">
-    <label class="block font-medium text-sm text-gray-700" for="image">
-        Profile Image
-    </label>
-    
-    <div class="flex items-center mt-2">
-        <!-- Hidden file input -->
-        <input id="image" class="hidden" type="file" name="image" accept="image/*">
-
-        <!-- Custom styled label acting as the button -->
-        <label for="image" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
-            Choose File
-        </label>
-
-        <!-- Display the selected file name -->
-        <span id="file-name" class="text-lg font-medium text-black ml-2">>No file chosen</span>
-    </div>
-</div>
-
-<!-- JavaScript to update the file name -->
-<script>
-    document.getElementById('image').addEventListener('change', function() {
-        var fileName = this.files[0]?.name || 'No file chosen';
-        document.getElementById('file-name').textContent = fileName;
-    });
-</script>--}}
-
-{{--<div class="mt-4">
-    <label class="block font-medium text-sm text-gray-700" for="image">
-        Profile Image
-    </label>
-    
-    <div class="flex items-center mt-2">
-        <!-- Hidden file input -->
-        <input id="image" class="hidden" type="file" name="image"  accept="image/*">
-
-        <!-- Custom styled label acting as the button -->
-        <label for="image" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
-            Choose File
-        </label>
-
-        <!-- Display the selected file name -->
-        <span id="file-name" class="text-lg font-medium text-black ml-3">No file chosen</span>
-    </div>
-</div>
-
-<!-- JavaScript to update the file name -->
-<script>
-    document.getElementById('image').addEventListener('change', function() {
-        var fileName = this.files[0]?.name || 'No file chosen';
-        document.getElementById('file-name').textContent = fileName;
-    });
-</script>--}}
-
-<div class="mt-4">
     <label class="block font-medium text-sm text-gray-700" for="image">
         Profile Image
     </label>
@@ -152,7 +63,6 @@
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
 </div>
-
 <!-- JavaScript to update the file name -->
 <script>
     function updateFileName(input) {
@@ -168,18 +78,121 @@
         }
     });
     
+</script>--}}
+
+
+
+{{--<div class="mt-4">
+    <label class="block font-medium text-sm text-gray-700" for="image">
+        Profile Image
+    </label>
+    
+    <div class="flex items-center mt-2">
+        <!-- Hidden file input -->
+        <input id="image" class="hidden" type="file" name="image" accept="image/*" 
+               onchange="updateFileName(this)">
+
+        <!-- Custom styled label acting as the button -->
+        <label for="image" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
+            Choose File
+        </label>
+
+        <!-- Display the selected file name -->
+        <span id="file-name" class="text-lg font-medium text-black ml-3">
+            No file chosen
+        </span>
+    </div>
+
+    @error('image')
+        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
+<!-- Add this hidden input to store the file name -->
+<input type="hidden" id="selected-file-name" name="selected_file_name" value="{{ old('selected_file_name') }}">
+
+<script>
+    function updateFileName(input) {
+        var fileName = input.files[0]?.name || 'No file chosen';
+        document.getElementById('file-name').textContent = fileName;
+        document.getElementById('selected-file-name').value = fileName;
+    }
+
+    // Check if there's an old file name and update the display
+    window.addEventListener('load', function() {
+        var oldFileName = "{{ old('selected_file_name') }}";
+        if (oldFileName && oldFileName !== 'No file chosen') {
+            document.getElementById('file-name').textContent = oldFileName;
+        }
+    });
+</script>--}}
+<div class="mt-4">
+    <label class="block font-medium text-sm text-gray-700" for="image">
+        Profile Image
+    </label>
+    
+    <div class="flex items-center mt-2">
+        <!-- Hidden file input -->
+        <input id="image" class="hidden" type="file" name="image" accept="image/*" 
+               onchange="uploadFile(this)">
+
+        <!-- Custom styled label acting as the button -->
+        <label for="image" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
+            Choose File
+        </label>
+
+        <!-- Display the selected file name -->
+        <span id="file-name" class="text-lg font-medium text-black ml-3">
+            No file chosen
+        </span>
+    </div>
+
+    @error('image')
+        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
+<!-- Add this hidden input to store the uploaded file path -->
+<input type="hidden" id="uploaded-file-path" name="uploaded_file_path" value="{{ old('uploaded_file_path') }}">
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function uploadFile(input) {
+        var file = input.files[0];
+        if (file) {
+            var formData = new FormData();
+            formData.append('image', file);
+            
+            axios.post('{{ route("upload.temp") }}', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(function (response) {
+                document.getElementById('file-name').textContent = file.name;
+                document.getElementById('uploaded-file-path').value = response.data.path;
+            })
+            .catch(function (error) {
+                console.error('Error uploading file:', error);
+            });
+        }
+    }
+
+    // Check if there's an old file name and update the display
+    window.addEventListener('load', function() {
+        var oldFilePath = "{{ old('uploaded_file_path') }}";
+        if (oldFilePath) {
+            var fileName = oldFilePath.split('/').pop();
+            document.getElementById('file-name').textContent = fileName;
+        }
+    });
 </script>
 
 
 
 
- 
 
-
-
-
-
-            <div class="mt-4">
+<div class="mt-4">
                 <x-label for="email" value="{{ __('Email') }}" />
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             </div>

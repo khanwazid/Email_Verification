@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Telescope\Telescope;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\Admin;
 use App\Http\Controllers\TempUploadController;
 
 
@@ -22,6 +24,7 @@ use App\Http\Controllers\TempUploadController;
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
+use \App\Http\Middleware\RedirectIfAuthenticated;
 |
 */
 /*Route::get('/', function () {
@@ -38,6 +41,11 @@ Route::get('/', function () {
 });
 
 
+
+
+Route::get('/', function () {
+    return view('welcome');
+})->name('welcome');
 
 
 
@@ -65,7 +73,7 @@ Route::post('add',[AddressController::class,'addData']);
 Route::get('delete/{id}',[AddressController::class,'delete']);
 Route::get('edit/{id}',[AddressController::class,'editData']);
 Route::post('edit',[AddressController::class,'update']);*/
-Route::middleware(['auth'])->group(function () {
+/*Route::middleware(['auth'])->group(function () {
     Route::get('/add', [AddressController::class, 'add'])->name('addresses.add');
     Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
 
@@ -82,7 +90,7 @@ Route::get('/addresses/{id}/edit', [AddressController::class, 'edit'])->name('ad
 // Route for updating the address
 Route::get('/edit/{id}', [AddressController::class, 'edit'])->name('addresses.edit');
 Route::put('/addresses/{id}', [AddressController::class, 'update'])->name('addresses.update');
-});
+});*/
 
 Route::middleware([
     'auth:sanctum',
@@ -98,10 +106,44 @@ Route::middleware([
 
 //Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-Route::get('/usersaddresses', [UserController::class, 'getData']);
+/*Route::get('/usersaddresses', [UserController::class, 'getData']);
 Route::get('search', [UserController::class, 'search']);
 Route::get('list',[AddressController::class,'show']);
 Route::get('/addresses', [AddressController::class, 'show'])->name('addresses.list');
+Route::get('/admin/dashboard', [UserController::class, 'page']);*/
 Route::post('/upload-temp', [TempUploadController::class, 'store'])->name('upload.temp');
+
   
+
+Route::middleware(['auth', 'admin'])->group(function () {
+   
+    Route::get('/usersaddresses', [UserController::class, 'getData']);
+    Route::get('/add', [AddressController::class, 'add'])->name('addresses.add');
+    Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+    Route::get('delete/{id}',[AddressController::class,'delete']);
+    Route::get('/addresses/{id}/edit', [AddressController::class, 'edit'])->name('addressess.edit');
+    // Route for updating the address
+    Route::get('/edit/{id}', [AddressController::class, 'edit'])->name('addresses.edit');
+    Route::put('/addresses/{id}', [AddressController::class, 'update'])->name('addresses.update');
+    Route::get('get-states', [AddressController::class, 'getStates'])->name('get.states');
+    Route::get('get-cities', [AddressController::class, 'getCities'])->name('get.cities');
+    Route::get('search', [UserController::class, 'search']);
+    Route::get('list',[AddressController::class,'show']);
+    Route::get('/addresses', [AddressController::class, 'show'])->name('addresses.list');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/admin/dashboard', [AdminController::class, 'page']);
+    Route::get('/admin/details', [AdminController::class, 'show'])->name('admin.details');
+});
+
+//Route::get('/admin/dashboard', [UserController::class, 'page']);
+/*Route::middleware(['auth'])->group(function () {
+    // Admin routes
+    Route::get('/admin/dashboard', [UserController::class, 'page'])->name('admin.dashboard');
+});*/
+/*Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/dashboard', [UserController::class, 'page'])
+         ->middleware('admin')
+         ->name('admin.dashboard');
+});*/
+
 

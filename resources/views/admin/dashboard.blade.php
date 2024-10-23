@@ -31,7 +31,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-          
             padding: 40px;
         }
 
@@ -57,7 +56,6 @@
 
         .btn {
             width: 250px; /* Full width button */
-           /*max-width: 150px; /* Restrict button width */
             padding: 10px 25px;
             background-color: #d4a373;
             color: white;
@@ -75,12 +73,6 @@
     </style>
 </head>
 <body>
-@if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
-
     <!-- Left Side - Welcome Image -->
     <div class="left-side"></div>
 
@@ -91,8 +83,10 @@
 
         <!-- Button Container -->
         <div class="btn-container">
-            <a href="{{ route('login') }}" class="btn">Login</a>
-            <a href="{{ route('register') }}" class="btn">Register</a>
+            <a href="{{ route('users.index') }}" class="btn">User</a>
+           <a href="{{ route('addresses.list') }}" class="btn">Address</a>
+           <a href="{{ route('admin.details') }}" class="btn">View Admin Details</a> 
+            {{-- <a href="{{ route('home') }}" class="btn">BACK TO HOME</a>--}}
         </div>
     </div>
 </body>

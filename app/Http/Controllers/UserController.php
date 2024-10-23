@@ -2,7 +2,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class UserController extends Controller
@@ -61,4 +63,19 @@ class UserController extends Controller
             return back()->with('error', 'Failed to search users. Please try again.');
         }
     }
+
+    /*public function page(){
+        return view('admin.dashboard');
+
+    }*/
+    
+    /*public function page()
+    {
+        if (auth()->user()->role === 'admin') {
+            return view('admin.dashboard');
+        } else {
+            return redirect()->route('welcome')->with('error', 'You do not have access to this page.');
+        }
+    }*/
+    
 }

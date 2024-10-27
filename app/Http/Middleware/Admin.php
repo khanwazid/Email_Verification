@@ -22,11 +22,10 @@ class Admin
                 return $next($request); // Allow access to admin routes
             } else {
                 // Redirect regular users to their profile
-                return redirect('/user/profile')->with('error', 'You do not have access to this page. Redirecting to your profile.');
+                return redirect('/user/profile');
             }
         }
 
-        // Optionally, you can handle unauthenticated users here
-        return redirect()->route('login')->with('error', 'You need to be logged in to access this page.');
+      
     }
 }

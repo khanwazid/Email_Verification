@@ -17,26 +17,16 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        /*if (Auth::check()) {
-            if (Auth::user()->role === 'admin') {
-                // Check if the current route is already the admin.dashboard
-                if (!$request->routeIs('admin.dashboard')) {
-                    return redirect()->route('admin.dashboard');
-                }
-                return $next($request);
-            } else {
-                return redirect()->route('welcome')->with('error', 'You do not have access to this page, it is accessible only for admins.');
-
-            }
-        }*/
         if (Auth::check()) {
             if (Auth::user()->role === 'admin') {
-                return $next($request);
+                return $next($request); // Allow access to admin routes
             } else {
-                return redirect()->route('welcome')->with('error', 'You do not have access to this page, it is accessible only for admins.');
+                // Redirect regular users to their profile
+                return redirect('/user/profile')->with('error', 'You do not have access to this page. Redirecting to your profile.');
             }
         }
 
-        //return redirect()->route('welcome');
+        // Optionally, you can handle unauthenticated users here
+        return redirect()->route('login')->with('error', 'You need to be logged in to access this page.');
     }
 }

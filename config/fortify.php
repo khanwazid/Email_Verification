@@ -76,6 +76,7 @@ return [
 
     //'home' => RouteServiceProvider::HOME,
     'home' => '/user/profile',
+    'home' => '/admin/dashboard',
 
 
 

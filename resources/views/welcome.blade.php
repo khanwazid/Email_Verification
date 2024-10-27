@@ -75,11 +75,7 @@
     </style>
 </head>
 <body>
-@if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
+
 
     <!-- Left Side - Welcome Image -->
     <div class="left-side"></div>

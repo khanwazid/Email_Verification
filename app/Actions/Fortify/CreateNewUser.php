@@ -83,6 +83,7 @@ class CreateNewUser implements CreatesNewUsers
 
     return User::create($userData);
 }*/
+
 public function create(array $input): User
 {
     Validator::make($input, [

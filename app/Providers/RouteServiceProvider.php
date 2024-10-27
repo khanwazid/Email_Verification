@@ -17,8 +17,18 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
-   // public const HOME = '/user/profile';  
+   // public const HOME = '/dashboard';
+   // public const HOME = '/user/profile'; 
+    public const HOME = '/dashboard'; // Change this to your default redirect path
+
+// Add this property to define role-specific redirects
+protected function redirectTo()
+{
+    if (auth()->user()->role === 'admin') {
+        return '/admin/dashboard';
+    }
+    return '/user/profile'; // Regular user dashboard
+} 
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

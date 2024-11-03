@@ -112,27 +112,30 @@ Route::get('list',[AddressController::class,'show']);
 Route::get('/addresses', [AddressController::class, 'show'])->name('addresses.list');
 Route::get('/admin/dashboard', [UserController::class, 'page']);*/
 Route::post('/upload-temp', [TempUploadController::class, 'store'])->name('upload.temp');
-
+Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+Route::get('/add', [AddressController::class, 'add'])->name('addresses.add');
+Route::get('get-states', [AddressController::class, 'getStates'])->name('get.states');
+    Route::get('get-cities', [AddressController::class, 'getCities'])->name('get.cities');
   
 
 Route::middleware(['auth', 'admin'])->group(function () {
    
     Route::get('/usersaddresses', [UserController::class, 'getData']);
-    Route::get('/add', [AddressController::class, 'add'])->name('addresses.add');
-    Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+   // Route::get('/add', [AddressController::class, 'add'])->name('addresses.add');
+   // Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
     Route::get('delete/{id}',[AddressController::class,'delete']);
-    Route::get('/addresses/{id}/edit', [AddressController::class, 'edit'])->name('addressess.edit');
+   // Route::get('/addresses/{id}/edit', [AddressController::class, 'edit'])->name('addressess.edit');
     // Route for updating the address
     Route::get('/edit/{id}', [AddressController::class, 'edit'])->name('addresses.edit');
     Route::put('/addresses/{id}', [AddressController::class, 'update'])->name('addresses.update');
-    Route::get('get-states', [AddressController::class, 'getStates'])->name('get.states');
-    Route::get('get-cities', [AddressController::class, 'getCities'])->name('get.cities');
-    Route::get('search', [UserController::class, 'search']);
-    Route::get('list',[AddressController::class,'show']);
-    Route::get('/addresses', [AddressController::class, 'show'])->name('addresses.list');
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/admin/dashboard', [AdminController::class, 'page']);
-    Route::get('/admin/details', [AdminController::class, 'show'])->name('admin.details');
+   // Route::get('get-states', [AddressController::class, 'getStates'])->name('get.states');
+   // Route::get('get-cities', [AddressController::class, 'getCities'])->name('get.cities');
+    Route::get('search', [UserController::class, 'search'])->name('users.search');
+    Route::get('list',[AddressController::class,'index'])->name('addresses.list');
+    //Route::get('/addresses', [AddressController::class, 'show'])->name('addresses.list');
+  // Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/admin/dashboard', [AdminController::class, 'page'])->name('admin.dashboard');
+   // Route::get('/admin/details', [AdminController::class, 'show'])->name('admin.details');
 });
 
 //Route::get('/admin/dashboard', [UserController::class, 'page']);

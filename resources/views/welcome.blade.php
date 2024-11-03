@@ -55,22 +55,27 @@
             gap: 15px; /* Spacing between buttons */
         }
 
+        
+          
         .btn {
-            width: 250px; /* Full width button */
-           /*max-width: 150px; /* Restrict button width */
-            padding: 10px 25px;
-            background-color: #d4a373;
-            color: white;
+            width: 250px;
+            padding: 15px;
+            background: linear-gradient(135deg, #d4a373, #d4ac73); /* Gradient background */
+            color: #fff;
             border: none;
             cursor: pointer;
             font-size: 1.2rem;
-            border-radius: 5px;
+            font-weight: bold;
+            border-radius: 8px;
             text-decoration: none;
             text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .btn:hover {
-            background-color: #bf8e5b;
+            transform: scale(1.05); /* Slight scaling on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
         }
     </style>
 </head>

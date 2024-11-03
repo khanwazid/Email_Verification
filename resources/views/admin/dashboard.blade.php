@@ -5,40 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
     <style>
-       
-        
-        
         /* Header styles */
         .header {
-            position: absolute; /* Position the header absolutely */
-            top: 20px; /* Adjust the top position */
-            right: 20px; /* Adjust the right position */
-            z-index: 1000; /* Ensure it is above other content */
-            background-color: white; /* Optional: adds background */
-            padding: 10px 20px; /* Padding around header */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for header */
-            border-radius: 5px; /* Rounded corners for header */
-        }
-        
-       
-
-       
-       
-
-        /* Logout button styles */
-        .logout-btn {
-            background-color: #ff4c4c; /* Red background */
-            color: white;
-            padding: 10px 15px;
-            border: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            text-decoration: none;
-        }
-
-        .logout-btn:hover {
-            background-color: #e63939; /* Darker red on hover */
         }
 
         @media (max-width: 768px) {
@@ -48,8 +24,6 @@
                 min-height: 50vh;
             }
         }
-
-
 
         body {
             font-family: Arial, sans-serif;
@@ -77,46 +51,49 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-          
             padding: 40px;
         }
 
         h1 {
             font-size: 3rem;
-            color: #333;
-            margin-bottom: 0px; /* Adjust margin to bring paragraph closer */
+            color: #000000;
+            margin-bottom: 0;
         }
 
         p {
             font-size: 1.2rem;
-            color: #d4a373;
+            color: 	#0000ff;
             margin-top: 0;
-            margin-bottom: 30px; /* Adjusted spacing */
+            margin-bottom: 30px;
         }
 
         .btn-container {
             display: flex;
-            flex-direction: column; /* Stack buttons vertically */
-            align-items: center; /* Center the buttons */
-            gap: 15px; /* Spacing between buttons */
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
 
+        /* Updated button style to match the design */
         .btn {
-            width: 250px; /* Full width button */
-           /*max-width: 150px; /* Restrict button width */
-            padding: 10px 25px;
-            background-color: #d4a373;
-            color: white;
+            width: 250px;
+            padding: 15px;
+            background: linear-gradient(135deg, #007bff, #0056b3); /* Gradient background */
+            color: #fff;
             border: none;
             cursor: pointer;
             font-size: 1.2rem;
-            border-radius: 5px;
+            font-weight: bold;
+            border-radius: 8px;
             text-decoration: none;
             text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .btn:hover {
-            background-color: #bf8e5b;
+            transform: scale(1.05); /* Slight scaling on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
         }
     </style>
 </head>
@@ -126,18 +103,6 @@
             {{ session('error') }}
         </div>
     @endif
-
-    <!-- Header with Admin Dashboard and Logout -->
-    <div class="header">
-        
-        <a href="{{ route('logout') }}" class="logout-btn" 
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-           Logout
-        </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-        </form>
-    </div>
 
     <!-- Left Side - Welcome Image -->
     <div class="left-side"></div>
@@ -149,10 +114,22 @@
 
         <!-- Button Container -->
         <div class="btn-container">
-            <a href="{{ route('users.index') }}" class="btn">User</a>
-            <a href="{{ route('addresses.list') }}" class="btn">Address</a>
-            <a href="{{ route('admin.details') }}" class="btn">View Admin Details</a>
+            <a href="{{ route('users.search') }}" class="btn">Users List</a>
+            <a href="{{ route('addresses.list') }}" class="btn">Addresses List</a>
+            <a href="{{ route('profile.show') }}" class="btn">View Admin Profile</a>
         </div>
+        @if (!auth()->user()->isAdmin())
+        <div class="addresses-section">
+            <h2>Edit or Remove Addresses</h2>
+            <!-- Your edit/remove addresses code -->
+        </div>
+
+        <div class="addresses-list">
+            <h2>Addresses</h2>
+            <!-- Your addresses listing code -->
+        </div>
+    @endif
+</div>
     </div>
 </body>
 </html>

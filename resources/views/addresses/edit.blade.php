@@ -25,13 +25,11 @@
                         </div>
                     @endif
 
-
-
                     @if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
 
                     <form action="{{ route('addresses.update', $address->id) }}" method="POST">
                         @csrf
@@ -43,7 +41,7 @@
                             <select name="country_id" id="country_id" class="block mt-1 w-full">
                                 <option value="">{{ __('Select Country') }}</option>
                                 @foreach($countries as $country)
-                                    <option value="{{ $country->id }}" {{ old('country_id', $address->country_id) == $country->id ? 'selected' : '' }}>
+                                    <option value="{{ $country->id }}" {{ old('country_id', $address->city->state->country_id) == $country->id ? 'selected' : '' }}>
                                         {{ $country->name }}
                                     </option>
                                 @endforeach
@@ -53,11 +51,16 @@
                             @enderror
                         </div>
 
-                        <!-- State Dropdown -->
+                     {{--   <!-- State Dropdown -->
                         <div class="mt-4">
                             <x-label for="state_id" value="{{ __('State') }}" />
                             <select name="state_id" id="state_id" class="block mt-1 w-full">
                                 <option value="">{{ __('Select State') }}</option>
+                                @foreach($states as $state)
+                                    <option value="{{ $state->id }}" {{ old('state_id', $address->city->state_id) == $state->id ? 'selected' : '' }}>
+                                        {{ $state->name }}
+                                    </option>
+                                @endforeach
                             </select>
                             @error('state_id')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -69,12 +72,48 @@
                             <x-label for="city_id" value="{{ __('City') }}" />
                             <select name="city_id" id="city_id" class="block mt-1 w-full">
                                 <option value="">{{ __('Select City') }}</option>
+                                @foreach($cities as $city)
+                                    <option value="{{ $city->id }}" {{ old('city_id', $address->city_id) == $city->id ? 'selected' : '' }}>
+                                        {{ $city->name }}
+                                    </option>
+                                @endforeach
                             </select>
                             @error('city_id')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+--}}
+<!-- State Dropdown -->
+<div class="mt-4">
+    <x-label for="state_id" value="{{ __('State') }}" />
+    <select name="state_id" id="state_id" class="block mt-1 w-full">
+        <option value="">{{ __('Select State') }}</option>
+        @foreach($states as $state)
+            <option value="{{ $state->id }}" {{ old('state_id', $address->city->state_id) == $state->id ? 'selected' : '' }}>
+                {{ $state->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('state_id')
+        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+</div>
 
+<!-- City Dropdown -->
+<div class="mt-4">
+    <x-label for="city_id" value="{{ __('City') }}" />
+    <select name="city_id" id="city_id" class="block mt-1 w-full">
+        <option value="">{{ __('Select City') }}</option>
+        @foreach($cities as $city)
+            <option value="{{ $city->id }}" {{ old('city_id', $address->city_id) == $city->id ? 'selected' : '' }}>
+                {{ $city->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('city_id')
+        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+</div>
                         <!-- Address Line 1 -->
                         <div class="mt-4">
                             <x-label for="address_line_1" value="{{ __('Address Line 1') }}" />
@@ -93,16 +132,8 @@
                             @enderror
                         </div>
 
-                     {{--  <!-- User ID -->
+                        <!-- User Dropdown -->
                         <div class="mt-4">
-                            <x-label for="user_id" value="{{ __('User ID') }}" />
-                            <x-input id="user_id" class="block mt-1 w-full" type="text" name="user_id" :value="old('user_id', $address->user_id)" />
-                            @error('user_id')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>--}}
-<!-- User Dropdown -->
-<div class="mt-4">
                             <x-label for="user_id" value="{{ __('User') }}" />
                             <select name="user_id" id="user_id" class="block mt-1 w-full">
                                 <option value="">{{ __('Select User') }}</option>
@@ -116,10 +147,7 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-           
 
-
-                
                         <div class="flex items-center justify-end mt-4">
                             <x-button class="ml-4">
                                 {{ __('Update Address') }}
@@ -140,8 +168,9 @@
     <!-- AJAX for dependent dropdowns -->
     <script>
         $(document).ready(function() {
-            var oldStateId = '{{ old('state_id', $address->state_id) }}';
-            var oldCityId = '{{ old('city_id', $address->city_id) }}';
+            var oldStateId = '{{ old('state_id', $address->city->state_id ?? '') }}';
+            var oldCityId = '{{ old('city_id', $address->city_id ?? '') }}';
+            var oldCountryId = '{{ old('country_id', $address->city->state->country_id ?? '') }}';
 
             $('#country_id').on('change', function() {
                 var countryId = $(this).val();
@@ -151,21 +180,20 @@
                         type: 'GET',
                         data: { country_id: countryId },
                         success: function(data) {
-                            $('#state_id').empty().append('<option value="">{{ __('Select State') }}</option>');
-                            $.each(data, function(key, value) {
-                                var selected = (value.id == oldStateId) ? 'selected' : '';
-                                $('#state_id').append('<option value="' + value.id + '" ' + selected + '>' + value.name + '</option>');
+                            $('#state_id').empty().append('<option value="">{{ __("Select State") }}</option>');
+                            $.each(data, function(key, state) {
+                                $('#state_id').append('<option value="' + state.id + '">' + state.name + '</option>');
                             });
-                            $('#city_id').empty().append('<option value="">{{ __('Select City') }}</option>');
 
-                            if (oldStateId) {
-                                $('#state_id').trigger('change');
+                            // If the previous selected country has a state already selected, mark it
+                            if (oldCountryId == countryId) {
+                                $('#state_id').val(oldStateId);
+                                $('#state_id').change();
                             }
                         }
                     });
                 } else {
-                    $('#state_id').empty().append('<option value="">{{ __('Select State') }}</option>');
-                    $('#city_id').empty().append('<option value="">{{ __('Select City') }}</option>');
+                    $('#state_id').empty().append('<option value="">{{ __("Select State") }}</option>');
                 }
             });
 
@@ -177,22 +205,24 @@
                         type: 'GET',
                         data: { state_id: stateId },
                         success: function(data) {
-                            $('#city_id').empty().append('<option value="">{{ __('Select City') }}</option>');
-                            $.each(data, function(key, value) {
-                                var selected = (value.id == oldCityId) ? 'selected' : '';
-                                $('#city_id').append('<option value="' + value.id + '" ' + selected + '>' + value.name + '</option>');
+                            $('#city_id').empty().append('<option value="">{{ __("Select City") }}</option>');
+                            $.each(data, function(key, city) {
+                                $('#city_id').append('<option value="' + city.id + '">' + city.name + '</option>');
                             });
+
+                            // If the previous selected state has a city already selected, mark it
+                            if (oldStateId == stateId) {
+                                $('#city_id').val(oldCityId);
+                            }
                         }
                     });
                 } else {
-                    $('#city_id').empty().append('<option value="">{{ __('Select City') }}</option>');
+                    $('#city_id').empty().append('<option value="">{{ __("Select City") }}</option>');
                 }
             });
 
-            var oldCountryId = '{{ old('country_id', $address->country_id) }}';
-            if (oldCountryId) {
-                $('#country_id').trigger('change');
-            }
+            // Trigger change events on page load to set the correct states and cities based on the existing address
+            $('#country_id').val(oldCountryId).change();
         });
     </script>
 </x-guest-layout>

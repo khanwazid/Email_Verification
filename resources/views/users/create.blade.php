@@ -87,3 +87,77 @@
     
   </body>
 </html>
+
+
+
+     <!-- Edit Address Modal -->
+     @if ($showEditModal)
+<div wire:model="showEditModal" class="fixed z-10 inset-0 overflow-y-auto" style="display: {{ $showEditModal ? 'block' : 'none' }};">
+    <div class="flex items-center justify-center min-h-screen bg-gray-800 bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+            <h3 class="text-xl font-semibold text-center text-gray-800 mb-6">{{ __('Edit Address') }}</h3>
+            
+            <!-- Country Selection -->
+            <div class="mt-4">
+                <label for="edit_country" class="block text-sm font-medium text-gray-700">{{ __('Country') }}</label>
+                <select id="edit_country" wire:model="newAddress.country_id" wire:change="loadStates" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                    <option value="">{{ __('Select Country') }}</option>
+                    @foreach($countries as $country)
+                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+                    @endforeach
+                </select>
+                @error('newAddress.country_id') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <!-- State Selection -->
+            <div class="mt-4">
+                <label for="edit_state" class="block text-sm font-medium text-gray-700">{{ __('State') }}</label>
+                <select id="edit_state" wire:model="newAddress.state_id" wire:change="loadCities" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                    <option value="">{{ __('Select State') }}</option>
+                    @foreach($states as $state)
+                        <option value="{{ $state->id }}">{{ $state->name }}</option>
+                    @endforeach
+                </select>
+                @error('newAddress.state_id') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <!-- City Selection -->
+            <div class="mt-4">
+                <label for="edit_city" class="block text-sm font-medium text-gray-700">{{ __('City') }}</label>
+                <select id="edit_city" wire:model="newAddress.city_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                    <option value="">{{ __('Select City') }}</option>
+                    @foreach($cities as $city)
+                        <option value="{{ $city->id }}">{{ $city->name }}</option>
+                    @endforeach
+                </select>
+                @error('newAddress.city_id') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <!-- Address Line 1 -->
+            <div class="mt-4">
+                <label for="edit_address_line_1" class="block text-sm font-medium text-gray-700">{{ __('Address Line 1') }}</label>
+                <input id="edit_address_line_1" type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" wire:model.defer="newAddress.address_line_1" />
+                @error('newAddress.address_line_1') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <!-- Address Line 2 -->
+            <div class="mt-4">
+                <label for="edit_address_line_2" class="block text-sm font-medium text-gray-700">{{ __('Address Line 2') }}</label>
+                <input id="edit_address_line_2" type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" wire:model.defer="newAddress.address_line_2" />
+                @error('newAddress.address_line_2') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex justify-end">
+                <button wire:click="$set('showEditModal', false)" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-gray-500">
+                    {{ __('Cancel') }}
+                </button>
+                <button wire:click="updateAddress" class="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-red-500">
+                    {{ __('Update Address') }}
+                </button>
+            </div>
+        </div>
+    </div>
+@endif
+@endif
+</div>

@@ -3,50 +3,30 @@
         <x-validation-errors class="mb-4" />
 
         <div class="container">
-    <div class="card">
-        <div class="form-header">
-        <h1 class="text-6xl font-bold text-center mb-8 text-blue-600">Add New Address</h1>
-        </div>
-
-        <div class="card-body">
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-
-            @if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
-
-
-           {{-- <div class="container">
             <div class="card">
-    <div class="form-header">
-        <h1 class="text-5xl font-bold text-center mb-8 text-blue-600">Add New Address</h1>
-    </div>
+                <div class="form-header">
+                    <h1 class="text-6xl font-bold text-center mb-8 text-blue-600">Add New Address</h1>
+                </div>
 
                 <div class="card-body">
+                    {{-- Success Message --}}
+                    
                     @if(session('success'))
-                        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
-                            <p class="font-bold">Success</p>
-                            <p>{{ session('success') }}</p>
-                        </div>
-                    @endif
-
+    <div id="success-alert" style="background-color: #4ade80; border: 2px solid #22c55e;" class="px-6 py-4 rounded-lg shadow-lg mb-6 text-white">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="font-bold">Success!</p>
+                <p>{{ session('success') }}</p>
+            </div>
+        </div>
+    </div>
+@endif
+                    {{-- Error Messages --}}
                     @if ($errors->any())
                         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
                             <p class="font-bold">Error</p>
@@ -56,8 +36,14 @@
                                 @endforeach
                             </ul>
                         </div>
-                    @endif--}}
+                    @endif
 
+                    @if(session('error'))
+                        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                            <p class="font-bold">Error</p>
+                            <p>{{ session('error') }}</p>
+                        </div>
+                    @endif
 
         <form method="POST" action="{{ route('addresses.store') }}">
             @csrf
@@ -112,31 +98,25 @@
                 @enderror
             </div>
 
-            {{--<div class="mt-4">
-                <x-label for="user_id" value="{{ __('User ID') }}" />
-                <x-input id="user_id" class="block mt-1 w-full" type="text" name="user_id" :value="old('user_id')" />
-                @error('user_id')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
-            </div>--}}
+           
 
-            
-{{--<div class="mt-4">
-    <x-label for="existing_user_id" value="{{ __('Existing Users') }}" />
-    <select name="existing_user_id" id="existing_user_id" class="block mt-1 w-full">
-        <option value="">{{ __('Select User') }}</option>
+            <div class="mt-4">
+    <x-label for="user_id" value="{{ __('Existing User') }}" />
+    <select name="user_id" id="user_id" class="block mt-1 w-full" readonly>
         @foreach($users as $user)
-            <option value="{{ $user->id }}" {{ old('existing_user_id') == $user->id ? 'selected' : '' }}>
-                {{ $user->name }}  
+            <option value="{{ $user->id }}" selected>
+                {{ $user->name }}
             </option>
         @endforeach
     </select>
-    @error('existing_user_id')
+    @error('user_id')
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
-</div>--}}
+</div>
+      
 
-<div class="mt-4">
+
+{{--<div class="mt-4">
     <x-label for="user_id" value="{{ __('Existing Users') }}" />
     <select name="user_id" id="user_id" class="block mt-1 w-full">
         <option value="">{{ __('Select User') }}</option>
@@ -149,7 +129,7 @@
     @error('user_id')
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
-</div>
+</div>--}}
 
 
 
@@ -158,12 +138,12 @@
                 <x-button class="ml-4">
                     {{ __('Submit') }}
                 </x-button>
-               <a class="ml-4 underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('addresses.list') }}">
+               <a class="ml-4 underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('profile.show') }}">
                     {{ __('Cancel?') }}
                 </a>
             </div>
         </form>
-    </x-authentication-card>
+    
 
     <!-- jQuery inclusion -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -226,4 +206,15 @@
             }
         });
     </script>
+     <script>
+    $(document).ready(function() {
+        $('#success-alert').fadeIn('slow');
+        setTimeout(function() {
+            $('#success-alert').fadeOut('slow', function() {
+                $(this).remove();
+            });
+        }, 4000);
+    });
+</script>
+        </x-authentication-card>
 </x-guest-layout>

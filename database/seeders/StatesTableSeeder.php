@@ -25,7 +25,7 @@ class StatesTableSeeder extends Seeder
         foreach ($states as $country => $stateList) {
             $countryId = Country::where('name', $country)->first()->id;
             foreach ($stateList as $state) {
-                State::create([
+                State::firstOrCreate([
                     'country_id' => $countryId,
                     'name' => $state,
                 ]);

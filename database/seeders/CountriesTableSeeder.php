@@ -17,7 +17,14 @@ class CountriesTableSeeder extends Seeder
     {
         $countries = ['Saudi Arabia', 'United Arab Emirates', 'India'];
         foreach ($countries as $country) {
-            Country::create(['name' => $country]);
+            Country::firstOrCreate(['name' => $country]);
     }
 }
 }
+
+
+
+
+
+
+

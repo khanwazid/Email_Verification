@@ -10,7 +10,7 @@ class Address extends Model
     use HasFactory;
     public $timestamps=false; 
     protected $fillable = [
-        'user_id', 'country_id', 'state_id', 'city_id',
+        'user_id', 'city_id',
         'address_line_1', 'address_line_2',
     ];
 
@@ -20,12 +20,12 @@ class Address extends Model
     }
    public function country()
     {
-        return $this->belongsTo(Country::class);
+        return $this->city->state->country;
     }
 
     public function state()
     {
-        return $this->belongsTo(State::class);
+        return $this->city->state;
     }
     public function city()
     {

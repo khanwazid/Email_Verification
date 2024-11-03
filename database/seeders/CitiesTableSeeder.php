@@ -31,7 +31,7 @@ class CitiesTableSeeder extends Seeder
         foreach ($cities as $state => $cityList) {
             $stateId = State::where('name', $state)->first()->id;
             foreach ($cityList as $city) {
-                City::create([
+                City::firstOrCreate([
                     'state_id' => $stateId,
                     'name' => $city,
                 ]);

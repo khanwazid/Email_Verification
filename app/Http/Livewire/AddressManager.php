@@ -1,12 +1,20 @@
 <?php
+
 namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Address;
+use App\Models\Country;
+use App\Models\State;
+use App\Models\City;
 
 class AddressManager extends Component
 {
+    
     public $addresses;
+    public $countries;
+    public $states = [];
+    public $cities = [];
     public $newAddress = [
         'country_id' => '',
         'state_id' => '',
@@ -15,8 +23,8 @@ class AddressManager extends Component
         'address_line_2' => '',
     ];
     public $editingAddressId = null;
-    public $showAddModal = false; // Ensure this property is defined
-    public $showEditModal = false; // You should also have this if you have an edit modal
+    public $showAddModal = false;
+    public $showEditModal = false;
 
     protected $rules = [
         'newAddress.country_id' => 'required',
@@ -29,6 +37,7 @@ class AddressManager extends Component
     public function mount()
     {
         $this->addresses = auth()->user()->addresses;
+        $this->countries = Country::all();
     }
 
     public function addAddress()
@@ -37,7 +46,7 @@ class AddressManager extends Component
         auth()->user()->addresses()->create($this->newAddress);
         $this->addresses = auth()->user()->addresses->fresh();
         $this->resetNewAddress();
-        $this->showAddModal = false; // Close modal after adding
+        $this->showAddModal = false;
     }
 
     public function editAddress($addressId)
@@ -45,7 +54,39 @@ class AddressManager extends Component
         $this->editingAddressId = $addressId;
         $address = Address::find($addressId);
         $this->newAddress = $address->toArray();
-        $this->showEditModal = true; // Show edit modal
+
+        // Load states and cities based on existing address data
+       /* $this->states = State::where('country_id', $this->newAddress['country_id'])->get();
+        $this->cities = City::where('state_id', $this->newAddress['state_id'])->get();
+
+        $this->showEditModal = true;*/
+        $this->newAddress = $address->toArray() + [
+            'country_id' => $address->city->state->country->id ?? null,
+            'state_id' => $address->city->state->id ?? null,
+            'city_id' => $address->city->id ?? null,
+        ];
+        if ($this->newAddress['country_id']) {
+            $this->states = State::where('country_id', $this->newAddress['country_id'])->get();
+        }
+    
+        if ($this->newAddress['state_id']) {
+            $this->cities = City::where('state_id', $this->newAddress['state_id'])->get();
+        }
+    
+        $this->showEditModal = true;
+    }
+
+    public function loadStates()
+    {
+        $this->states = State::where('country_id', $this->newAddress['country_id'])->get();
+        $this->newAddress['state_id'] = '';
+        $this->cities = []; // Reset cities when country changes
+    }
+
+    public function loadCities()
+    {
+        $this->cities = City::where('state_id', $this->newAddress['state_id'])->get();
+        $this->newAddress['city_id'] = ''; // Reset city when state changes
     }
 
     public function updateAddress()
@@ -56,13 +97,19 @@ class AddressManager extends Component
         $this->addresses = auth()->user()->addresses->fresh();
         $this->resetNewAddress();
         $this->editingAddressId = null;
-        $this->showEditModal = false; // Close edit modal
+        $this->showEditModal = false;
+
+        session()->flash('message', 'Address updated successfully!');
+        session()->flash('message_type', 'success');
     }
 
     public function deleteAddress($addressId)
     {
         Address::destroy($addressId);
         $this->addresses = auth()->user()->addresses->fresh();
+
+        session()->flash('message', 'Address deleted successfully!');
+session()->flash('message_type', 'error');
     }
 
     private function resetNewAddress()

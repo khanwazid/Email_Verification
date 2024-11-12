@@ -100,7 +100,7 @@
 
            
 
-            <div class="mt-4">
+           {{--  <div class="mt-4">
     <x-label for="user_id" value="{{ __('Existing User') }}" />
     <select name="user_id" id="user_id" class="block mt-1 w-full" readonly>
         @foreach($users as $user)
@@ -112,7 +112,7 @@
     @error('user_id')
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
-</div>
+</div> --}}
       
 
 

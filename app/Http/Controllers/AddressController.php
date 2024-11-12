@@ -25,8 +25,7 @@ class AddressController extends Controller
             return redirect()->back()->with('error', 'An error occurred while loading the page. Please try again later.');
         }
     }
-
-    public function store(Request $request)
+   /* public function store(Request $request)
     {
         // Validation for city_id and address line
         $validatedData = $request->validate([
@@ -60,7 +59,39 @@ class AddressController extends Controller
             Log::error('Error in AddressController@store: ' . $e->getMessage());
             return back()->with('error', 'Failed to add address. Please try again.');
         }
+    }*/
+    public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'city_id' => 'required|exists:cities,id',
+        'address_line_1' => 'required|string|max:255',
+        'address_line_2' => 'nullable|string|max:255',
+    ]);
+
+    try {
+        $existingAddress = Address::where('address_line_1', $request->input('address_line_1'))
+            ->where('address_line_2', $request->input('address_line_2'))
+            ->where('city_id', $request->input('city_id'))
+            ->where('user_id', auth()->id())
+            ->exists();
+
+        if ($existingAddress) {
+            return redirect()->route('addresses.add')->with('error', 'Address already exists.');
+        }
+
+        Address::create([
+            'user_id' => auth()->id(),
+            'city_id' => $request->city_id,
+            'address_line_1' => $request->address_line_1,
+            'address_line_2' => $request->address_line_2,
+        ]);
+
+        return redirect()->route('addresses.add')->with('success', 'Address added successfully.');
+    } catch (\Exception $e) {
+        Log::error('Error in AddressController@store: ' . $e->getMessage());
+        return back()->with('error', 'Failed to add address. Please try again.');
     }
+}
     public function getStates(Request $request)
 {
     $countryId = $request->input('country_id');
@@ -90,20 +121,12 @@ class AddressController extends Controller
     }
 
    
-   /* public function show()
-    {
-        try {
-            $data = Address::all();
-            return view('list', ['addresses' => $data]);
-        } catch (Exception $e) {
-            return back()->with('error', 'Failed to load addresses.');
-        }
-    }*/
+   
     public function index()
     {
         try {
             // Fetch all addresses with their related city, state, and country
-            $addresses = Address::with(['city.state.country'])->get();
+            $addresses = Address::with(['city.state.country'])->paginate(4);
     
             return view('list', compact('addresses'));
         } catch (\Exception $e) {
@@ -122,44 +145,7 @@ class AddressController extends Controller
         }
     }
 
-  
-   /* public function edit($id)
-{
-    try {
-        // Fetch address by ID
-        $address = Address::findOrFail($id);
-        
-        // Get all countries
-        $countries = Country::all();
-        
-        // Get the current state and city IDs
-        $stateId = $address->city ? $address->city->state_id : null;
-        $countryId = $stateId ? $address->city->state->country_id : null;
-        
-        // Get the current states and cities based on the address
-        $states = $countryId ? State::where('country_id', $countryId)->get() : collect();
-        $cities = $stateId ? City::where('state_id', $stateId)->get() : collect();
-
-        // Fetch all users from the database
-        $users = User::all();
-
-        // Pass the data to the view
-        return view('addresses.edit', compact('address', 'countries', 'states', 'cities', 'users', 'countryId'));
-    } catch (\Exception $e) {
-        Log::error('Error in AddressController@edit: ' . $e->getMessage());
-        return redirect()->back()->with('error', 'An error occurred while loading the page. Please try again later.');
-    }
-}*/
-/*public function edit($id)
-{
-    $address = Address::findOrFail($id);
-    $countries = Country::all();
-    $states = State::all(); // You may want to filter this based on the selected country
-    $cities = City::all(); // Similarly, filter based on selected state
-    $users = User::where('role', '!=', 'admin')->get(); // Adjust the role check as needed
-
-    return view('addresses.edit', compact('address', 'countries', 'states', 'cities', 'users'));
-}*/
+ 
 public function edit($id)
 {
     try {
@@ -211,5 +197,71 @@ public function update(Request $request, $id)
         return back()->withInput()->with('error', 'Failed to update address. Please try again.');
     }
 }
+/*public function edit($id) 
+{
+    try {
+        $address = Address::findOrFail($id);
+        $countries = Country::all();
+        $users = User::where('role', '!=', 'admin')->get();
+        
+        // Initialize with empty collections
+        $states = collect();
+        $cities = collect();
+        
+        // Get state and country IDs safely
+        $stateId = optional($address->city)->state_id;
+        $countryId = optional(optional($address->city)->state)->country_id;
+        
+        // Only fetch related data if they exist
+        if ($countryId) {
+            $states = State::where('country_id', $countryId)->get();
+        }
+        
+        if ($stateId) {
+            $cities = City::where('state_id', $stateId)->get();
+        }
+
+        return view('addresses.edit', compact(
+            'address',
+            'countries',
+            'states',
+            'cities',
+            'users',
+            'countryId'
+        ));
+    } catch (\Exception $e) {
+        Log::error('Error in AddressController@edit: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'An error occurred while loading the page.');
+    }
+}
+
+public function update(Request $request, $id) 
+{
+    try {
+        $address = Address::findOrFail($id);
+        
+        $validatedData = $request->validate([
+            'address_line_1' => 'required|string|max:255',
+            'address_line_2' => 'nullable|string|max:255',
+            'country_id' => 'required|exists:countries,id',
+            'state_id' => 'required|exists:states,id',
+            'city_id' => 'required|exists:cities,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $address->update($validatedData);
+        
+        return redirect()
+            ->route('addresses.list')
+            ->with('update', 'Address updated successfully.');
+            
+    } catch (\Exception $e) {
+        Log::error('Error in AddressController@update: ' . $e->getMessage());
+        return back()
+            ->withInput()
+            ->with('error', 'Failed to update address. Please try again.');
+    }
+}
+*/
 
 }

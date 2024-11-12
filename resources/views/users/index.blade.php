@@ -110,7 +110,7 @@
 
                                <div style="display: flex; align-items: center;">
     <img src="{{ asset('storage/default.png') }}" alt="Default Image" style="width: 50px; height: 50px;">
-    <span style="margin-left: 10px; font-size: 0.8rem; color: #888;">No profile picture uploaded.</span>
+    <span style="margin-left: 10px; font-size: 0.8rem; color:  #ff6347;">No profile picture uploaded.</span>
 </div>
                             @endif
                         </td>
@@ -120,6 +120,10 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="d-flex justify-content-end">
+            {{ $users->links() }} <!-- Pagination links -->
+        </div>
+    </div>
        
     </div>
 

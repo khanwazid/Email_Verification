@@ -97,13 +97,19 @@
                 <td>{{ $address['id'] }}</td>
                 <td>{{ $address['address_line_1'] }}</td>
                 <td>{{ $address['address_line_2'] }}</td>
-                <td>{{ $address->city->state->country->name ?? 'N/A' }}</td> <!-- Accessing country name -->
+            {{--  <td>{{ $address->city->state->country->name ?? 'N/A' }}</td> <!-- Accessing country name -->
                 <td>{{ $address->city->state->name ?? 'N/A' }}</td> <!-- Accessing state name -->
-                <td>{{ $address->city->name }}</td> <!-- Accessing city name -->
-               {{-- <td>{{ $address['user_id'] }}</td>--}}
+                <td>{{ $address->city->name }}</td> <!-- Accessing city name -->--}}
+                <td>{{ $address->city && $address->city->state && $address->city->state->country ? $address->city->state->country->name : 'N/A' }}</td>
+                <td>{{ $address->city && $address->city->state ? $address->city->state->name : 'N/A' }}</td>
+                <td>{{ $address->city ? $address->city->name : 'N/A' }}</td>
+
+                {{-- <td>{{ $address['user_id'] }}</td>--}}
               <td> <a href="#" class="user-link text-dark font-weight-normal"  data-toggle="modal" data-target="#userModal" data-user-name="{{ $address->user->name ?? 'N/A' }}" data-user-id="{{ $address->user->id ?? 'N/A' }}" data-user-email="{{ $address->user->email ?? 'N/A' }}">
-                                {{ $address->user->name ?? 'N/A' }}
-                            </a></td>
+                                 {{-- {{ $address->user->name ?? 'N/A' }} --}}
+
+                                {{ $address->user ? $address->user->name : 'N/A' }}
+                            </a>
                 <td>
                     <div class="button-group">
                         <!-- Delete Form -->
@@ -120,6 +126,9 @@
         @endforeach
     </tbody>
 </table>
+<div class="d-flex justify-content-end">
+    {{ $addresses->links() }} <!-- This generates pagination links -->
+</div>
     </div>
   <!-- User Modal -->
   <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
@@ -141,6 +150,8 @@
                 </div>
             </div>
         </div>
+
+        
     </div>
 
    

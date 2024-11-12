@@ -35,6 +35,61 @@
                         @csrf
                         @method('PUT')
 
+                   
+                   
+                   
+                   
+                   <!-- Country Dropdown -->
+<div>
+    <x-label for="country_id" value="{{ __('Country') }}" />
+    <select name="country_id" id="country_id" class="block mt-1 w-full">
+        <option value="">{{ __('Select Country') }}</option>
+        @foreach($countries as $country)
+            <option value="{{ $country->id }}" 
+                {{ old('country_id', optional(optional(optional($address->city)->state)->country)->id) == $country->id ? 'selected' : '' }}>
+                {{ $country->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('country_id')
+    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+@enderror
+</div>
+
+<!-- State Dropdown -->
+<div class="mt-4">
+    <x-label for="state_id" value="{{ __('State') }}" />
+    <select name="state_id" id="state_id" class="block mt-1 w-full">
+        <option value="">{{ __('Select State') }}</option>
+        @foreach($states as $state)
+            <option value="{{ $state->id }}" 
+                {{ old('state_id', optional(optional($address->city)->state)->id) == $state->id ? 'selected' : '' }}>
+                {{ $state->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('state_id')
+    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+@enderror
+</div>
+
+<!-- City Dropdown -->
+<div class="mt-4">
+    <x-label for="city_id" value="{{ __('City') }}" />
+    <select name="city_id" id="city_id" class="block mt-1 w-full">
+        <option value="">{{ __('Select City') }}</option>
+        @foreach($cities as $city)
+            <option value="{{ $city->id }}" 
+                {{ old('city_id', optional($address->city)->id) == $city->id ? 'selected' : '' }}>
+                {{ $city->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('city_id')
+    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+@enderror
+</div>
+     {{-- 
                         <!-- Country Dropdown -->
                         <div>
                             <x-label for="country_id" value="{{ __('Country') }}" />
@@ -50,6 +105,7 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+
 
                      {{--   <!-- State Dropdown -->
                         <div class="mt-4">
@@ -82,7 +138,7 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
---}}
+
 <!-- State Dropdown -->
 <div class="mt-4">
     <x-label for="state_id" value="{{ __('State') }}" />
@@ -113,7 +169,61 @@
     @error('city_id')
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
+</div> --}}
+
+
+<!-- Country Dropdown -->
+{{-- <div> uncomment this all dropdown and method(edit and update the last)in addresscontroller
+    <x-label for="country_id" value="{{ __('Country') }}" />
+    <select name="country_id" id="country_id" class="block mt-1 w-full">
+        <option value="">{{ __('Select Country') }}</option>
+        @foreach($countries as $country)
+            <option value="{{ $country->id }}" 
+                {{ old('country_id', optional(optional($address->city)->state)->country_id) == $country->id ? 'selected' : '' }}>
+                {{ $country->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('country_id')
+    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+@enderror
+
 </div>
+
+<!-- State Dropdown -->
+<div class="mt-4">
+    <x-label for="state_id" value="{{ __('State') }}" />
+    <select name="state_id" id="state_id" class="block mt-1 w-full">
+        <option value="">{{ __('Select State') }}</option>
+        @foreach($states as $state)
+            <option value="{{ $state->id }}" 
+                {{ old('state_id', optional($address->city)->state_id) == $state->id ? 'selected' : '' }}>
+                {{ $state->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('state_id')
+ <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+     @enderror
+</div>
+
+<!-- City Dropdown -->
+<div class="mt-4">
+    <x-label for="city_id" value="{{ __('City') }}" />
+    <select name="city_id" id="city_id" class="block mt-1 w-full">
+        <option value="">{{ __('Select City') }}</option>
+        @foreach($cities as $city)
+            <option value="{{ $city->id }}" 
+                {{ old('city_id', $address->city_id) == $city->id ? 'selected' : '' }}>
+                {{ $city->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('city_id')
+        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+</div>   --}}
+
                         <!-- Address Line 1 -->
                         <div class="mt-4">
                             <x-label for="address_line_1" value="{{ __('Address Line 1') }}" />

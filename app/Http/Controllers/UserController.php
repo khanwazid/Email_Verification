@@ -52,7 +52,7 @@ class UserController extends Controller
     public function search(Request $request)
     {
         try {
-            $userData = User::where('name', 'like', "%$request->search%")->get();
+            $userData = User::where('name', 'like', "%$request->search%")->paginate(5);
 
             if ($userData->isEmpty()) {
                 return back()->with('error', 'No users found matching your search.');
@@ -64,18 +64,6 @@ class UserController extends Controller
         }
     }
 
-    /*public function page(){
-        return view('admin.dashboard');
-
-    }*/
-    
-    /*public function page()
-    {
-        if (auth()->user()->role === 'admin') {
-            return view('admin.dashboard');
-        } else {
-            return redirect()->route('welcome')->with('error', 'You do not have access to this page.');
-        }
-    }*/
+   
     
 }

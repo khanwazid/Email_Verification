@@ -86,7 +86,7 @@
             <th>CountryName</th> <!-- Updated header -->
             <th>StateName</th>   <!-- Updated header -->
             <th>CityName</th>    <!-- Updated header -->
-            <th>UserName</th>
+            <th>Name</th>
             <th>Operation</th>
         </tr>
     </thead>

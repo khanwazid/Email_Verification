@@ -241,7 +241,7 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-                     
+          {{--            
             @if($address->user_id)
 <!-- Hidden field to send the user_id -->
 <input type="hidden" name="user_id" value="{{ $address->user_id }}">
@@ -260,11 +260,11 @@
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
 </div>
-@endif
+@endif  17 OCT 13:40--}}
 
 
                         <!-- User Dropdown -->
-                       {{--  <div class="mt-4">
+                        <div class="mt-4">
                             <x-label for="user_id" value="{{ __('User') }}" />
                             <select name="user_id" id="user_id" class="block mt-1 w-full">
                                 <option value="">{{ __('Select User') }}</option>
@@ -277,7 +277,7 @@
                             @error('user_id')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
-                        </div>  13 OCT 13:40--}}
+                        </div> 
 
                         <div class="flex items-center justify-end mt-4">
                             <x-button class="ml-4">

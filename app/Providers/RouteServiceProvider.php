@@ -47,6 +47,15 @@ protected function redirectTo()
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+        RateLimiter::for('location', function (Request $request) {
+            return [
+                // Allow 60 requests per minute for authenticated users
+                Limit::perMinute(60)->by($request->user()?->id ?: $request->ip()),
+                
+                // Allow 1000 requests per day
+                Limit::perDay(1000)->by($request->user()?->id ?: $request->ip()),
+            ];
+        });
     }
 
     /**

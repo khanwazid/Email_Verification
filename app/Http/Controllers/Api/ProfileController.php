@@ -34,6 +34,86 @@ class ProfileController extends Controller
     public function updateProfile(Request $request)
     {
         try {
+            // Get the authenticated user
+            $user = User::find(auth()->id());
+    
+            // Validate the input
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,' . $user->id,
+                'username' => 'required|string|unique:users,username,' . $user->id,
+                'phone_number' => 'required|string',
+                'gender' => 'nullable|in:male,female,other',
+                'password' => 'nullable|min:8|confirmed',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            ]);
+    
+            // If validation fails, return validation errors
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+    
+            // Get the request data for the user (without the image)
+            $data = $request->only(['name', 'email', 'username', 'phone_number', 'gender']);
+    
+            // Handle profile image update if any
+            if ($request->hasFile('image')) {
+                // Delete the old image if exists
+                if ($user->image) {
+                    Storage::disk('public')->delete($user->image);
+                }
+    
+                // Store the new image in the 'profile-images' directory in the public disk
+                $imagePath = $request->file('image')->store('profile-images', 'public');
+    
+                // Add the image path to the data
+                $data['image'] = $imagePath;
+            }
+    
+            // If password is provided, hash it and update
+            if ($request->filled('password')) {
+                $data['password'] = Hash::make($request->password);
+            }
+    
+            // Update the user profile
+            $user->update($data);
+    
+            // Generate the full URL for the image (if it exists)
+            if ($user->image) {
+                // Return the URL to access the image
+                $user->image_url = Storage::url($user->image); // This returns the full URL to the image
+            }
+    
+            // Return the updated user data wrapped in the UserResource
+            return response()->json([
+                'status' => true,
+                'message' => 'Profile updated successfully',
+                'data' => new UserResource($user),  // Return the updated user as a resource
+                'image_url' => $user->image_url,   // Include the image URL in the response
+            ], 200);
+    
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Database error occurred',
+                'error' => $e->getMessage()
+            ], 500);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while updating profile',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+}    
+   /* public function updateProfile(Request $request)
+    {
+        try {
             // Get authenticated user
             $user = User::find(auth()->id());
 
@@ -102,7 +182,7 @@ class ProfileController extends Controller
             ], 500);
         }
     }
-}
+}*/
     /*public function showProfileWithAddresses(Request $request)
 {
     // Get the authenticated user

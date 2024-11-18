@@ -13,8 +13,30 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class AddressController extends Controller
-{  
+{ 
     public function add()
+    {
+        try {
+            $countries = Country::all();
+    
+            // Check if the logged-in user has the 'admin' role
+            if (auth()->user()->role === 'admin') {
+                // If the user is an admin, fetch all users
+                $users = User::all();
+            } else {
+                // If the user is not an admin, fetch only the logged-in user
+                $users = User::where('id', auth()->id())->get();
+            }
+    
+            return view('addresses.add', compact('countries', 'users'));
+        } catch (\Exception $e) {
+            Log::error('Error in AddressController@add: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while loading the page. Please try again later.');
+        }
+    }
+    
+ 
+    /*public function add()
     {
         try {
             $countries = Country::all();
@@ -24,7 +46,7 @@ class AddressController extends Controller
             Log::error('Error in AddressController@add: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while loading the page. Please try again later.');
         }
-    }
+    }*/
    /* public function store(Request $request)
     {
         // Validation for city_id and address line
@@ -66,6 +88,7 @@ class AddressController extends Controller
         'city_id' => 'required|exists:cities,id',
         'address_line_1' => 'required|string|max:255',
         'address_line_2' => 'nullable|string|max:255',
+        'user_id' => 'required|exists:users,id',
     ]);
 
     try {
@@ -78,9 +101,11 @@ class AddressController extends Controller
         if ($existingAddress) {
             return redirect()->route('addresses.add')->with('error', 'Address already exists.');
         }
-
+  // Check if admin, if so, save the selected user_id, otherwise use the authenticated user's id
+  $userId = auth()->user()->role === 'admin' ? $request->user_id : auth()->id();
         Address::create([
-            'user_id' => auth()->id(),
+            'user_id' => $userId,
+           // 'user_id' => auth()->id(),
             'city_id' => $request->city_id,
             'address_line_1' => $request->address_line_1,
             'address_line_2' => $request->address_line_2,

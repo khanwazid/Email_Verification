@@ -59,6 +59,9 @@
        <div class="d-flex justify-content-end mb-3">
     <a href="{{ url('/admin/dashboard') }}" class="btn btn-custom-blue">Back</a>
 </div>
+<div class="d-flex justify-content-end mb-3">
+    <a href="{{ url('/add') }}" class="btn bg-success text-white">Add A New Address</a>
+</div>
 @if(session('delete'))
     <div class="alert alert-danger" id="delete-message">
         {{ session('delete') }}

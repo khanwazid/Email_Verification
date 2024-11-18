@@ -121,6 +121,63 @@ class AddressController extends Controller
             'message' => 'Address deleted successfully'
         ], 200);
     }
+    public function search(Request $request)
+{
+    $user = auth()->user();
+    
+    if (!$user) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Unauthorized. Please login to search addresses.',
+        ], 401);
+    }
+
+    $validator = Validator::make($request->all(), [
+        'query' => 'required|string|min:2'
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Validation error',
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    $query = $request->get('query');
+
+    $addresses = Address::where('user_id', $user->id)
+        ->where(function($q) use ($query) {
+            $q->where('address_line_1', 'like', "%{$query}%")
+              ->orWhere('address_line_2', 'like', "%{$query}%")
+              ->orWhereHas('city', function($q) use ($query) {
+                  $q->where('name', 'like', "%{$query}%")
+                    ->orWhereHas('state', function($q) use ($query) {
+                        $q->where('name', 'like', "%{$query}%")
+                          ->orWhereHas('country', function($q) use ($query) {
+                              $q->where('name', 'like', "%{$query}%");
+                          });
+                    });
+              });
+        })
+        ->with(['city.state.country'])
+        ->get();
+
+    if ($addresses->isEmpty()) {
+        return response()->json([
+            'status' => true,
+            'message' => 'No addresses found matching your search criteria',
+            'data' => []
+        ], 200);
+    }
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Search results retrieved successfully',
+        'data' => AddressResource::collection($addresses)
+    ], 200);
+}
+
 }
    /* public function getUserAddresses(Request $request)
     {

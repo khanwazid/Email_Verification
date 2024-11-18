@@ -47,6 +47,7 @@
 
         <form method="POST" action="{{ route('addresses.store') }}">
             @csrf
+            
   <div>
                 <x-label for="country_id" value="{{ __('Country') }}" />
                 <select name="country_id" id="country_id" class="block mt-1 w-full">
@@ -130,7 +131,25 @@
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
 </div>--}}
+@if(auth()->user()->role === 'admin')
 
+<div class="mt-4">
+    <x-label for="user_id" value="{{ __('Select User') }}" />
+    <select name="user_id" id="user_id" class="block mt-1 w-full">
+        <option value="">{{ __('Select User') }}</option>
+        @foreach($users as $user)
+            <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                {{ $user->name }}  
+            </option>
+        @endforeach
+    </select>
+    @error('user_id')
+        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+</div>
+@else
+<input type="hidden" name="user_id" value="{{ auth()->id() }}">
+@endif
 
 
 

@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 
 class Handler extends ExceptionHandler
 {
@@ -49,6 +50,24 @@ class Handler extends ExceptionHandler
         });
         $this->reportable(function (Throwable $e) {
             //
+        });
+       
+
+
+        $this->renderable(function (ThrottleRequestsException $e, $request) {
+            $headers = $e->getHeaders();
+            
+            return response()->json([
+                'status' => false,
+                'message' => 'Rate limit exceeded',
+                'details' => [
+                    'error' => 'Too many requests',
+                    'retry_after_seconds' => $headers['Retry-After'] ?? 60,
+                    'retry_after_time' => now()->addSeconds($headers['Retry-After'] ?? 60)->format('Y-m-d H:i:s'),
+                    'limit' => $headers['X-RateLimit-Limit'] ?? 60,
+                    'remaining_attempts' => $headers['X-RateLimit-Remaining'] ?? 0
+                ]
+            ], 429, $headers);
         });
     }
 }

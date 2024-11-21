@@ -22,7 +22,9 @@ class AddressController extends Controller
             // Check if the logged-in user has the 'admin' role
             if (auth()->user()->role === 'admin') {
                 // If the user is an admin, fetch all users
-                $users = User::all();
+               // $users = User::all();
+               $users = User::where('role', '!=', 'admin')->get();
+
             } else {
                 // If the user is not an admin, fetch only the logged-in user
                 $users = User::where('id', auth()->id())->get();

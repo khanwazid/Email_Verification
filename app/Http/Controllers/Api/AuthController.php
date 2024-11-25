@@ -45,13 +45,22 @@ class AuthController extends Controller
             $user->gender = $request->gender;
            
 
-            if ($request->hasFile('image')) {
+           /* if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
                 $image->storeAs('public/profile-photos', $imageName);
                //$image->storeAs('public/profile-images', $imageName);
                 $user->image = 'profile-photos/' . $imageName;
                 //$user->image = 'profile-images/' . $imageName;
+            }*/
+            if ($request->hasFile('image')) {
+                // Using updateProfilePhoto method from HasProfilePhoto trait
+                $user->updateProfilePhoto($request->file('image'));
+                
+                // Store additional image if needed
+                $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+                $path = $request->file('image')->storeAs('images', $imageName, 'public');
+                $user->image = $path;
             }
 
             if ($user->save()) {
